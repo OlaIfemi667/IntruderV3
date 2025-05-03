@@ -1,0 +1,1 @@
+Third version of intruder focusing on automatisation of some usuals pentests tasks. So basically gathering information, finding vulnerabilities and reporting
