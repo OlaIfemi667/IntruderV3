@@ -47,3 +47,6 @@ async def doNmap(host):
     stdout, stderr = await runCommand(cmd, "nmap")
 
     return stdout, stderr
+
+
+
