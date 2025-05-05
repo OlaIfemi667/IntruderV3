@@ -21,14 +21,18 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
             #faire un whois
             stdoutWhois, stderrWhois = asyncio.run(doWhois(ip))
-            whoisParsed = whoisParsing(stdoutWhois)
             print(f"[+] Recherche enregistrement DNS de {ip} terminé")
-            print(whoisParsed)
+            print(stdoutWhois)
         
 
             #faire un scan de ports
             stdoutNmap, stderrNmap = asyncio.run(doNmap(ip))
             print(f"[+] Scan nmap de {ip}  terminé")
+            print(stdoutNmap)
+
+
+            #for each service search exploits
+            #if here is a wb server check to 10 owasp
 
 
     elif ip and domain != "None":

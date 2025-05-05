@@ -1,5 +1,6 @@
 import asyncio
 from urllib.parse import urlparse
+from parsing.whoisParsing import *
 
 async def runCommand(cmd, type):
     proc = await asyncio.create_subprocess_shell(
@@ -35,18 +36,23 @@ async def doWhois(host):
     print(f"[+] Recherche enregistrement DNS derriere {host}")
     
     stdout, stderr = await runCommand(cmd, "whois")
+
+    if stdout:
+        stdout = whoisParsing(stdout)
     
 
     return stdout, stderr
 
 
 async def doNmap(host):
-    cmd = f"nmap -sV -O {host}"
+    cmd = f"nmap -sV -O -oX {host}Nmap.xml {host}"
     print(f"[+] Scan de ports et versions des services {host}")
     
     stdout, stderr = await runCommand(cmd, "nmap")
+    
+    if stdout:
+        stdout = nmapParsing(stdout)
 
     return stdout, stderr
-
 
 
