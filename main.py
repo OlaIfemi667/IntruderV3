@@ -1,6 +1,7 @@
 import typer
 from subprocessUtils.subprocess import *
 from parsing.whoisParsing import *
+from parsing.nmapParsing import *
 
 from typing import Annotated
 
