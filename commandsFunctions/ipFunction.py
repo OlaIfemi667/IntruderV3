@@ -17,4 +17,16 @@ def ipAi(ip):
 
 
 def searchspoitEveryService(nmapOutput):
-    pass
+
+    #reminder nmapOutput format
+    #[
+    #   {
+    #       "ip": "aRandomIPaddress",
+    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}],
+    #       "os": {"name": "linux"}
+    #   }
+    #]
+
+    for port in nmapOutput["ports"]:
+        searchSploit(f"{port["service"]} {port["version"]}")
+        

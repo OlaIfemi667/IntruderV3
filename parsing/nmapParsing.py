@@ -9,6 +9,14 @@ def nmapParsing(fichierXml):
     results = []
 
     #récuperer les informations (ip, ports , versions et type os) pour chaques champs hosts dans le XML
+    #so the format is like this
+    #[
+    #   {
+    #       "ip": "aRandomIPaddress",
+    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}],
+    #       "os": {"name": "linux"}
+    #   }
+    #]
     for host in root.findall('host'):
         host_info = {}
         host_info['ip'] = host.find('address').attrib['addr']
