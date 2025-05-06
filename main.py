@@ -1,10 +1,15 @@
 import typer
-from subprocessUtils.subprocess import *
-from parsing.whoisParsing import *
-from parsing.nmapParsing import *
-
 from typing import Annotated
 
+#my packages
+from subprocessUtils.subprocess import * #for  subprocess handling
+from parsing.whoisParsing import * #to parse whois output
+from parsing.nmapParsing import * #to parse nmap
+from commandsFunctions.ipFunction import * #logique when only ip is provide
+from database.database import * #for db SQLite operations
+
+
+init_db() # this line is so obvious
 app = typer.Typer()
 
 
@@ -18,22 +23,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
         #si ping réussi
         if stdoutPing:
-            print("[+] Nous avons puis joindre l'hôte")
-
-            #faire un whois
-            stdoutWhois, stderrWhois = asyncio.run(doWhois(ip))
-            print(f"[+] Recherche enregistrement DNS de {ip} terminé")
-            print(stdoutWhois)
-        
-
-            #faire un scan de ports
-            stdoutNmap, stderrNmap = asyncio.run(doNmap(ip))
-            print(f"[+] Scan nmap de {ip}  terminé")
-            print(stdoutNmap)
-
-
-            #for each service search exploits
-            #if here is a wb server check to 10 owasp
+            ipAi(ip)
 
 
     elif ip and domain != "None":

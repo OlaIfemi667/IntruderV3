@@ -6,25 +6,35 @@ def init_db(db_path='database.db'):
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('''
-                CREATE TABLE IF NOT EXISTS scannerOutput (
+                CREATE TABLE IF NOT EXISTS SCANS (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    type TEXT NOT NULL,
-                    output TEXT NOT NULL
+                    scanName TEXT NOT NULL,
+                    ipaddress TEXT NOT NULL,
+                    domain TEXT NOT NULL
+                );
+            ''')
+            cursor.execute('''
+                CREATE TABLE IF NOT EXISTS PROCESSES (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    processType TEXT NOT NULL,
+                    processOutput TEXT NOT NULL,
+                    scan_id INTEGER,
+                    FOREIGN KEY(scan_id) REFERENCES SCANS(id)
                 )
             ''')
             conn.commit()
-        print("[+] Table 'scannerOutput' is ready.")
+        print("[+] database is ready is ready.")
     except sqlite3.Error as e:
         print(f"[!] Database error during initialization: {e}")
 
 
-def addScannerOutput(scan_type, output, db_path='database.db'):
+def addScan(name, ip, domain, db_path='database.db'):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO scannerOutput (type, output) VALUES (?, ?)",
-                (scan_type, output)
+                "INSERT INTO SCANS (scanName, ipaddress, domain) VALUES (?, ?, ?)",
+                (name, ip, domain)
             )
             conn.commit()
     except sqlite3.Error as e:
