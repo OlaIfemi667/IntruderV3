@@ -22,6 +22,7 @@ def nmapParsing(fichierXml):
         host_info['ip'] = host.find('address').attrib['addr']
         host_info['ports'] = []
         host_info['os'] = None
+        host_info['cve'] = []
 
         for port in host.findall('.//port'):
             if port.find('state').attrib['state'] != 'open':
@@ -36,6 +37,9 @@ def nmapParsing(fichierXml):
                 'version': service.attrib.get('version', '')
             }
             host_info['ports'].append(port_info)
+        
+        for cve in host.findall('.//'):
+            pass
 
         osmatch = host.find('.//osmatch')
         if osmatch is not None:
