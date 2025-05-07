@@ -37,9 +37,15 @@ def nmapParsing(fichierXml):
                 'version': service.attrib.get('version', '')
             }
             host_info['ports'].append(port_info)
-        
-        for cve in host.findall('.//'):
-            pass
+
+            for script in port.findall("script"):
+                entry = {}
+                if script.get("id"):
+                    exploitInfo = []
+                    print(f"IDDDDDD: {script.get("id")}")
+                    
+                    for table in script.findall("table"):
+                        pass
 
         osmatch = host.find('.//osmatch')
         if osmatch is not None:
@@ -52,3 +58,4 @@ def nmapParsing(fichierXml):
 
     return json.dumps(results, indent=4)
 
+print(nmapParsing("172.16.93.128Nmap.xml"))

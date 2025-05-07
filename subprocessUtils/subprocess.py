@@ -44,7 +44,7 @@ async def doWhois(host):
 
 
 async def doNmap(host):
-    cmd = f"nmap -sV -O  {host} -oX {host}Nmap.xml"
+    cmd = f"nmap  -sV -O --script=vuln {host} -oX {host}Nmap.xml"
     print(f"[+] Scan de ports et versions des services {host}")
     
     stdout, stderr = await runCommand(cmd, "nmap")
