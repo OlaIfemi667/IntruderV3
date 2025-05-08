@@ -37,15 +37,48 @@ def nmapParsing(fichierXml):
                 'version': service.attrib.get('version', '')
             }
             host_info['ports'].append(port_info)
+            portID = int(port.attrib['portid'])
 
+            #Parsing this shit was so fucking insane for me
+
+            #i figure it out this is basiccally the layout ou host_info["cve"]
+
+            #[
+            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],
+            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],    
+            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],
+            #   ..
+            #   ..
+            #   ]
+            #]
+
+            #
+            #
+            # So ti is basically a list of script information-list
             for script in port.findall("script"):
-                entry = {}
-                if script.get("id"):
-                    exploitInfo = []
-                    print(f"IDDDDDD: {script.get("id")}")
+                
+                structScript = []
+                structScript.append(portID)
+                #structScript.append(script.get("output"))
+                structScript.append(script.get("id"))
+                print(f"IDDDDDD: {script.get("id")}")
+
+                tableAll = {}
+                tableCount = 0
+                for table in script.findall("table"):
                     
-                    for table in script.findall("table"):
-                        pass
+                    tableElement = []
+                    tableElementKey = str(tableCount)
+                    for element in table.findall("elem"):
+                        tableElement.append({element.get("key"): element.text})
+                    
+                    tableAll[tableElementKey] = tableElement
+                    tableCount+=1
+                if tableAll != {}  and tableAll.get("0"):
+                    structScript.append(tableAll)
+                    host_info["cve"].append(structScript)
+
+                
 
         osmatch = host.find('.//osmatch')
         if osmatch is not None:
@@ -58,4 +91,5 @@ def nmapParsing(fichierXml):
 
     return json.dumps(results, indent=4)
 
-print(nmapParsing("172.16.93.128Nmap.xml"))
+if __name__  == "__main__":    
+    print(nmapParsing("172.16.93.128Nmap.xml"))
