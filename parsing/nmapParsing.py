@@ -1,5 +1,14 @@
 import xml.etree.ElementTree as ET
 import json
+import re
+
+
+
+def is_edb_format(value):
+    pattern = r"^EDB-ID:\d+$"
+    return bool(re.match(pattern, value))
+
+
 
 def nmapParsing(fichierXml):
 
@@ -13,16 +22,17 @@ def nmapParsing(fichierXml):
     #[
     #   {
     #       "ip": "aRandomIPaddress",
-    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}],
+    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}, "edb-ids": ]],
     #       "os": {"name": "linux"}
     #   }
     #]
+    host_info = {}
     for host in root.findall('host'):
-        host_info = {}
+        
         host_info['ip'] = host.find('address').attrib['addr']
         host_info['ports'] = []
         host_info['os'] = None
-        host_info['cve'] = []
+        
 
         for port in host.findall('.//port'):
             if port.find('state').attrib['state'] != 'open':
@@ -34,51 +44,24 @@ def nmapParsing(fichierXml):
                 'port': int(port.attrib['portid']),
                 'service': service.attrib.get('name', 'unknown'),
                 'product': service.attrib.get('product', ''),
-                'version': service.attrib.get('version', '')
+                'version': service.attrib.get('version', ''),
+                'edb_ids': [] 
             }
             host_info['ports'].append(port_info)
             portID = int(port.attrib['portid'])
 
-            #Parsing this shit was so fucking insane for me
+            host_info['cve'] = []
+            for script in port.findall(".//script"):
+                for table in script.findall(".//table"):
+                    for elem in table.findall(".//elem"):
+                        if elem.text and is_edb_format(elem.text):
+                            edb_id = elem.text.split("EDB-ID:")[1].strip()
+                            print(f"➡️ EDB-ID trouvé : {edb_id} sur le port {portID}")
+                            port_info['edb_ids'].append(edb_id)
 
-            #i figure it out this is basiccally the layout ou host_info["cve"]
+            host_info['ports'].append(port_info)
 
-            #[
-            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],
-            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],    
-            #   [portID, id(scriptID), [{"id_table": [tableElement],..,...,}],
-            #   ..
-            #   ..
-            #   ]
-            #]
-
-            #
-            #
-            # So ti is basically a list of script information-list
-            for script in port.findall("script"):
-                
-                structScript = []
-                structScript.append(portID)
-                #structScript.append(script.get("output"))
-                structScript.append(script.get("id"))
-                print(f"IDDDDDD: {script.get("id")}")
-
-                tableAll = {}
-                tableCount = 0
-                for table in script.findall("table"):
-                    
-                    tableElement = []
-                    tableElementKey = str(tableCount)
-                    for element in table.findall("elem"):
-                        tableElement.append({element.get("key"): element.text})
-                    
-                    tableAll[tableElementKey] = tableElement
-                    tableCount+=1
-                if tableAll != {}  and tableAll.get("0"):
-                    structScript.append(tableAll)
-                    host_info["cve"].append(structScript)
-
-                
+           
 
         osmatch = host.find('.//osmatch')
         if osmatch is not None:
