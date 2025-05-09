@@ -22,7 +22,7 @@ def nmapParsing(fichierXml):
     #[
     #   {
     #       "ip": "aRandomIPaddress",
-    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}, "edb-ids": ]],
+    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}, "edb-ids": [list of EDB-ID]],
     #       "os": {"name": "linux"}
     #   }
     #]
@@ -47,16 +47,14 @@ def nmapParsing(fichierXml):
                 'version': service.attrib.get('version', ''),
                 'edb_ids': [] 
             }
-            host_info['ports'].append(port_info)
             portID = int(port.attrib['portid'])
 
-            host_info['cve'] = []
             for script in port.findall(".//script"):
                 for table in script.findall(".//table"):
                     for elem in table.findall(".//elem"):
                         if elem.text and is_edb_format(elem.text):
                             edb_id = elem.text.split("EDB-ID:")[1].strip()
-                            print(f"➡️ EDB-ID trouvé : {edb_id} sur le port {portID}")
+                            print(f"> EDB-ID trouvé : {edb_id} sur le port {portID}")
                             port_info['edb_ids'].append(edb_id)
 
             host_info['ports'].append(port_info)
