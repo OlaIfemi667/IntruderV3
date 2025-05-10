@@ -1,7 +1,11 @@
 import asyncio
 from urllib.parse import urlparse
+
+
+#mes packages
 from parsing.whoisParsing import *
 from parsing.nmapParsing import *
+
 
 async def runCommand(cmd, type):
     proc = await asyncio.create_subprocess_shell(
@@ -38,7 +42,6 @@ async def doWhois(host):
 
     if stdout:
         stdout = whoisParsing(stdout)
-    
 
     return stdout, stderr
 
@@ -55,11 +58,10 @@ async def doNmap(host):
 
 
 async def searchSploit(name):
-    cmd = f"searchsploit -p {name}"
+    cmd = f"searchsploit  {name}"
 
     print(f"[+] Searching exploit for {name}")
     
     stdout, stderr = await runCommand(cmd, "searchsploit")
     return stdout, stderr
-
 

@@ -22,11 +22,14 @@ def searchspoitEveryService(nmapOutput):
     #[
     #   {
     #       "ip": "aRandomIPaddress",
-    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}],
+    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}, "edb-ids": [list of EDB-ID]}],
     #       "os": {"name": "linux"}
     #   }
     #]
 
+    exploits = []
     for port in nmapOutput["ports"]:
-        searchSploit(f"{port["service"]} {port["version"]}")
+        for edcID in port["edb-id"]:
+            #Logique pour récuperer le chemin de chaque exploit dans un  table et append {"portId": [list des chemins d'exploits]} dans la liste exploits
+
         
