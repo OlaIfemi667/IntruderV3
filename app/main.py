@@ -14,7 +14,27 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/home")
 def index():
-    return "TEst"
+    return render_template("index.html")
+
+
+@app.route("/home/scans")
+def scans():
+    return render_template("scans.html")
+
+
+@app.route("/home/scans/<scanName>")
+def scanDetail(scanName):
+    return render_template("scanBase.html")
+
+@app.route("/home/scans/<scanName>/reporting")
+def reporting(scanName):
+    return render_template("reportingBase.html")
+
+
+
+@app.route("/home/reports")
+def reports():
+    return render_template("reportsBase.html")
 
 
 if __name__ == "__main__":

@@ -31,5 +31,6 @@ def searchspoitEveryService(nmapOutput):
     for port in nmapOutput["ports"]:
         for edcID in port["edb-id"]:
             #Logique pour récuperer le chemin de chaque exploit dans un  table et append {"portId": [list des chemins d'exploits]} dans la liste exploits
+            pass
 
         
