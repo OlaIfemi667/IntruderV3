@@ -25,7 +25,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
         #si ping réussi
         if stdoutPing:
-            ipAi(ip, name)
+            asyncio.run(ipAi(ip, name))
 
 
     elif ip and domain != "None":
