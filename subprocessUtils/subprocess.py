@@ -65,3 +65,11 @@ async def searchSploit(name):
     stdout, stderr = await runCommand(cmd, "searchsploit")
     return stdout, stderr
 
+
+async def nuclei(host):
+    cmd = f"nuclei -target {host} -output {host}Nuclei.txt"
+    print(f"Vulnerability scan on {host} with nuclei")
+
+    stdout, stderr = await runCommand(cmd, "nuclei")
+    return stdout, stderr
+

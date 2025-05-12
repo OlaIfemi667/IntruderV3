@@ -18,7 +18,7 @@ app = typer.Typer()
 def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[str, typer.Argument(help="IP address to scan")], domain: Annotated[str, typer.Option(help="domain to scan")] = "None"):
     print(f"Scan name: {name}")
     addScan(name, ip, domain)
-        
+    #stdoutNuc, stderrNuc = asyncio.run(nuclei(ip))
     if ip and domain == "None":
         #faire un ping
         stdoutPing, stderrPing = asyncio.run(doPing(ip))
@@ -37,4 +37,5 @@ def report( scanName: Annotated[str, typer.Argument(help="domains to scan to sca
     print(f"report {scanName}")
 
 if __name__ ==  "__main__":
+
     app()
