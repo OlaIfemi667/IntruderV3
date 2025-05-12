@@ -17,13 +17,15 @@ app = typer.Typer()
 @app.command()
 def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[str, typer.Argument(help="IP address to scan")], domain: Annotated[str, typer.Option(help="domain to scan")] = "None"):
     print(f"Scan name: {name}")
+    addScan(name, ip, domain)
+        
     if ip and domain == "None":
         #faire un ping
         stdoutPing, stderrPing = asyncio.run(doPing(ip))
 
         #si ping réussi
         if stdoutPing:
-            ipAi(ip)
+            ipAi(ip, name)
 
 
     elif ip and domain != "None":
