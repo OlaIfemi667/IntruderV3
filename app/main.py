@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 
 
 #my packages
@@ -10,6 +11,10 @@ from database.database import * #for db SQLite operations
 
 
 app = Flask(__name__)
+init_db()
+base_dir = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(base_dir, '..', 'database.db')
+
 
 @app.route("/")
 @app.route("/home")
@@ -19,12 +24,13 @@ def index():
 
 @app.route("/home/scans")
 def scans():
-    return render_template("scans.html")
+    scans = getScans(DB_PATH)
+    return render_template("scans.html", content = scans )
 
 
 @app.route("/home/scans/<scanName>")
 def scanDetail(scanName):
-    return render_template("scanBase.html")
+    return render_template("scanVari.html", scan = scanName)
 
 @app.route("/home/scans/<scanName>/reporting")
 def reporting(scanName):

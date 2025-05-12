@@ -65,3 +65,19 @@ def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
     except Exception as e:
         print(f"[!] Unexpected error: {e}")
     return False
+
+
+
+def getScans(db_path='database.db'):
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT scanName FROM SCANS")
+            rows = cursor.fetchall()
+            print(f"{rows}AAAAAAAAAAAAAAAAAAAAAAAA")
+            return [row[0] for row in rows]  
+    except sqlite3.Error as e:
+        print(f"[!] Database error: {e}")
+    except Exception as e:
+        print(f"[!] Unexpected error: {e}")
+    return ["A"]

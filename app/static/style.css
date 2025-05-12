@@ -14,6 +14,9 @@ body{
     align-items: center;
     justify-content: space-evenly;
 }
+#main{
+    padding: 40px;
+}
 nav{
     display: flex;
     flex-direction: row;
@@ -31,4 +34,20 @@ nav a:hover{
     text-decoration: none;
     background-color: black;
     color: white;
+}
+
+#filAriane{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+#filAriane a{
+    text-decoration: none;
+    color: gray;
+}
+#filAriane a:hover{
+    text-decoration: none;
+    color: gray;
+    opacity: 0.5;
 }

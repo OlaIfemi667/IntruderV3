@@ -20,8 +20,13 @@
     </header>
     <div id="main">
         <h2>Scans</h2>
-        <p>Se all your scans here</p>
-
+        <p>See all your scans here</p>
+        <ul>
+            {% for scan in content%}
+                <li><a href="/home/scans/{{scan}}">{{scan}}</a></li>
+            {%endfor%}
+        </ul>
+        
     </div>
 </body>
 </html>
