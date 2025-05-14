@@ -1,7 +1,7 @@
 import re
 from collections import defaultdict
 
-def extract_high_vulns_per_port(file_path):
+def nucleiParsing(file_path):
     port_vulns = defaultdict(list)
     severity_order = {'info': 0, 'low': 1, 'medium': 2, 'high': 3, 'critical': 4}
 

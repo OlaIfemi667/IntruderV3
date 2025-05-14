@@ -39,13 +39,22 @@ def nmapParsing(fichierXml):
                 continue
 
             service = port.find('service')
+            if service is not None:
+                service_name = service.attrib.get('name', 'unknown')
+                product = service.attrib.get('product', '')
+                version = service.attrib.get('version', '')
+            else:
+                service_name = 'unknown'
+                product = ''
+                version = ''
+            
             port_info = {
                 'protocol': port.attrib['protocol'],
                 'port': int(port.attrib['portid']),
-                'service': service.attrib.get('name', 'unknown'),
-                'product': service.attrib.get('product', ''),
-                'version': service.attrib.get('version', ''),
-                'edb_ids': [] 
+                'service': service_name,
+                'product': product,
+                'version': version,
+                'edb_ids': []
             }
             portID = int(port.attrib['portid'])
 
