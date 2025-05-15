@@ -1,10 +1,10 @@
 from parsing.nmapParsing import *
 from parsing.whoisParsing import *
+from parsing.nucleiParsing import *
 from subprocessUtils.subprocess import *
 from database.database import *
 
 async def ipAi(ip, scanName):
-    print("[+] Nous avons pu joindre l'hôte")
 
     # faire un whois
     stdoutWhois, stderrWhois = await doWhois(ip)
@@ -18,6 +18,13 @@ async def ipAi(ip, scanName):
     print(f"[+] Scan nmap de {ip} terminé")
     
     addProcesses(scanName, "nmap", stdoutNmap)
+
+    #faire le scan de vuln avec nuclei
+    stdoutNuclei, stderrNuclei = await nuclei(ip)
+    print(f"[+] Scan nuclei de {ip} terminé")
+    
+    addProcesses(scanName, "nuclei", str(stdoutNuclei))
+
 
 
 def vulnscan():

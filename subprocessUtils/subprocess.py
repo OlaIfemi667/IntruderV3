@@ -5,6 +5,8 @@ from urllib.parse import urlparse
 #mes packages
 from parsing.whoisParsing import *
 from parsing.nmapParsing import *
+from parsing.nucleiParsing import *
+
 
 
 async def runCommand(cmd, type):
@@ -71,5 +73,7 @@ async def nuclei(host):
     print(f"Vulnerability scan on {host} with nuclei")
 
     stdout, stderr = await runCommand(cmd, "nuclei")
+    if stdout:
+        stdout = nucleiParsing(f"{host}Nuclei.txt")
     return stdout, stderr
 

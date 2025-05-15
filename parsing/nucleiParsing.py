@@ -24,11 +24,11 @@ def nucleiParsing(file_path):
         highest = max(vulns, key=lambda v: severity_order[v[0]])
         result[port] = highest[1]
 
-    return 
+    return  result
 
 
 if __name__ == "__main__":
     file_path = 'vulns.txt' 
-    high_vulns = extract_high_vulns_per_port(file_path)
+    high_vulns = nucleiParsing(file_path)
     
-    print(len(high_vulns))
+    print(high_vulns)
