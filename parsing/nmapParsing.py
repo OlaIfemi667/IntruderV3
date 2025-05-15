@@ -90,6 +90,7 @@ def nmapParsing(fichierXml):
 
 
 def convertTuples(input_list: List[Tuple[Any, Any, str, Any]]) -> List[Tuple[Any, Any, dict, Any]]:
+    #pour attribuer les types normal a mes output de la db
     result = []
     for item in input_list:
         raw_value = item[2]

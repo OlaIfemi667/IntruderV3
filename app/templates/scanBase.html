@@ -34,10 +34,37 @@
                         <p>{{detail[2]}}</p>
                     {% endif %}
 
-                    {% if detail[1] == 'nmap'%}
-                        <h2>NMAP RECORDS</h2>
-                        <p>{{detail[2]}}</p>
+                    {% if detail[1] == 'nmap' %}
+                        <h3>NMAP RECORDS</h3>
+
+                        {% if detail[2]|length == 0 %}
+                            <p>No juicy info found here</p>
+                        {% else %}
+                            {% set scan = detail[2][0] %}
+                            <details>
+                                <summary>IP: {{ scan["ip"] }}</summary>
+                                {% for port in scan["ports"] %}
+                                    <details>
+                                        <summary>Port {{ port["port"] }}</summary>
+                                        {% if port["edb_ids"] %}
+                                            <ul>
+                                                {% for edbId in port["edb_ids"] %}
+                                                    <li>
+                                                        <a href="https://www.exploit-db.com/exploits/{{ edbId }}" target="_blank">
+                                                            Exploit #{{ edbId }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <p>No known exploits.</p>
+                                        {% endif %}
+                                    </details>
+                                {% endfor %}
+                            </details>
+                        {% endif %}
                     {% endif %}
+
 
                     {% if detail[1] == 'nuclei'%}
                         <h2>NUCLEI RECORDS</h2>
