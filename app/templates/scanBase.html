@@ -44,7 +44,7 @@
                             <details>
                                 <summary>IP: {{ scan["ip"] }}</summary>
                                 {% for port in scan["ports"] %}
-                                    <details>
+                                    <details id="portDetail">
                                         <summary>Port {{ port["port"] }}</summary>
                                         {% if port["edb_ids"] %}
                                             <ul>
@@ -66,10 +66,7 @@
                     {% endif %}
 
 
-                    {% if detail[1] == 'nuclei'%}
-                        <h2>NUCLEI RECORDS</h2>
-                        <p>{{detail[2]}}</p>
-                    {% endif %}
+                    
                 </div>
             {% endfor %}
         </div>

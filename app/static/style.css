@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border: black 0.5px solid;
+    /*border: black 0.5px solid;*/
 }
 html{
     height: auto;
@@ -49,6 +49,27 @@ nav a:hover{
     color: gray;
 }
 #filAriane a:hover{
+    text-decoration: none;
+    color: gray;
+    opacity: 0.5;
+}
+
+#portDetail{
+    padding-left: 30px;
+}
+
+#portDetail ul li{
+    padding-left: 30px;
+    list-style: none;
+}
+
+#portDetail ul li a{
+
+    text-decoration: none;
+    color: gray;
+}
+
+#portDetail ul li a:hover{
     text-decoration: none;
     color: gray;
     opacity: 0.5;

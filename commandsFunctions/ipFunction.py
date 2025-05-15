@@ -20,10 +20,10 @@ async def ipAi(ip, scanName):
     addProcesses(scanName, "nmap", stdoutNmap)
 
     #faire le scan de vuln avec nuclei
-    stdoutNuclei, stderrNuclei = await nuclei(ip)
-    print(f"[+] Scan nuclei de {ip} terminé")
+    #stdoutNuclei, stderrNuclei = await nuclei(ip)
+    #print(f"[+] Scan nuclei de {ip} terminé")
     
-    addProcesses(scanName, "nuclei", str(stdoutNuclei))
+    #addProcesses(scanName, "nuclei", str(stdoutNuclei))
 
 
 
