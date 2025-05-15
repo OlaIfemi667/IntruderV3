@@ -30,7 +30,8 @@ def scans():
 
 @app.route("/home/scans/<scanName>")
 def scanDetail(scanName):
-    return render_template("scanVari.html", scan = scanName)
+    scanDetail = getScansDetails(DB_PATH, scanName)
+    return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
 @app.route("/home/scans/<scanName>/reporting")
 def reporting(scanName):

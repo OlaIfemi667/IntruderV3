@@ -27,7 +27,13 @@
         <p>This is scan id : {{scan}}</p>
 
         <div id="whois">
-            
+            {% for detail in scansContent%}
+                <p>{{detail}}</p>
+            {% endfor %}
+        </div>
+
+        <div id="nmap">
+
         </div>
 
 

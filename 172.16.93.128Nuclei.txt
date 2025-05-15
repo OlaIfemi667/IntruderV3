@@ -1,49 +1,48 @@
 [CVE-2012-1823] [http] [high] http://172.16.93.128/index.php?-d+allow_url_include%3don+-d+auto_prepend_file%3dphp%3a//input
-[phpmyadmin-panel] [http] [info] http://172.16.93.128/phpMyAdmin/ [paths="/phpMyAdmin/"]
+[phpmyadmin-panel] [http] [info] http://172.16.93.128/phpMyAdmin/index.php [paths="/phpMyAdmin/index.php"]
 [phpinfo-files] [http] [low] http://172.16.93.128/phpinfo.php [paths="/phpinfo.php"]
 [http-trace:trace-request] [http] [info] http://172.16.93.128
 [waf-detect:apachegeneric] [http] [info] http://172.16.93.128
 [samba-detect] [javascript] [info] 172.16.93.128:445 ["Samba 3.0.20-Debian"]
 [pgsql-default-db] [javascript] [high] 172.16.93.128:5432 [database="postgres",password="postgres",usernames="postgres"]
-[pgsql-default-db] [javascript] [high] 172.16.93.128:5432 [database="template1",password="postgres",usernames="postgres"]
-[pgsql-list-password-hashes] [javascript] [high] 172.16.93.128:5432 ["postgres : md53175bce1d3201d16594cebf9d7eb3f9d"] [database="postgres",password="postgres",usernames="postgres"]
-[postgres-default-logins] [javascript] [high] 172.16.93.128:5432 [passwords="postgres",usernames="postgres"]
-[pgsql-version-detect] [javascript] [high] 172.16.93.128:5432 ["PostgreSQL 8.3.1 on i486-pc-linux-gnu, compiled by GCC cc (GCC) 4.2.3 (Ubuntu 4.2.3-2ubuntu4)"] [database="postgres",password="postgres",usernames="postgres"]
-[pgsql-list-users] [javascript] [high] 172.16.93.128:5432 ["postgres"] [database="postgres",password="postgres",usernames="postgres"]
-[pgsql-list-database] [javascript] [high] 172.16.93.128:5432 ["template1","template0","postgres"] [database="postgres",password="postgres",usernames="postgres"]
-[ntlm-info] [javascript] [info] 172.16.93.128:445 ["NTLM: Samba 3.0.20-Debian"]
 [ssh-auth-methods] [javascript] [info] 172.16.93.128:22 ["["publickey","password"]"]
 [mysql-info] [javascript] [info] 172.16.93.128:3306 ["Version: 5.0.51a-3ubuntu5","Transport: tcp"]
-[pgsql-file-read] [javascript] [high] 172.16.93.128:5432 ["pg_twophase","postmaster.opts","pg_xlog","postmaster.pid","pg_multixact","pg_subtrans","pg_tblspc","PG_VERSION","server.crt","global","pg_clog","root.crt","base","server.key"] [database="postgres",password="postgres",usernames="postgres"]
+[pgsql-file-read] [javascript] [high] 172.16.93.128:5432 ["pg_multixact","global","pg_clog","pg_subtrans","base","pg_tblspc","server.key","pg_twophase","pg_xlog","postmaster.pid","root.crt","PG_VERSION","postmaster.opts","server.crt"] [database="postgres",password="postgres",usernames="postgres"]
+[pgsql-list-database] [javascript] [high] 172.16.93.128:5432 ["template1","template0","postgres"] [database="postgres",password="postgres",usernames="postgres"]
+[ntlm-info] [javascript] [info] 172.16.93.128:445 ["NTLM: Samba 3.0.20-Debian"]
+[postgres-default-logins] [javascript] [high] 172.16.93.128:5432 [passwords="postgres",usernames="postgres"]
+[pgsql-list-password-hashes] [javascript] [high] 172.16.93.128:5432 ["postgres : md53175bce1d3201d16594cebf9d7eb3f9d"] [database="postgres",password="postgres",usernames="postgres"]
 [smb-v1-supported] [javascript] [info] 172.16.93.128:445
+[pgsql-version-detect] [javascript] [high] 172.16.93.128:5432 ["PostgreSQL 8.3.1 on i486-pc-linux-gnu, compiled by GCC cc (GCC) 4.2.3 (Ubuntu 4.2.3-2ubuntu4)"] [database="postgres",password="postgres",usernames="postgres"]
+[pgsql-list-users] [javascript] [high] 172.16.93.128:5432 ["postgres"] [database="postgres",password="postgres",usernames="postgres"]
 [smb-version-detect:smb-version] [javascript] [info] 172.16.93.128:445 ["SMB 1.0"]
-[ssh-diffie-hellman-logjam] [javascript] [low] 172.16.93.128:22
+[pgsql-default-db] [javascript] [high] 172.16.93.128:5432 [database="template1",password="postgres",usernames="postgres"]
 [ssh-password-auth] [javascript] [info] 172.16.93.128:22
-[ssh-server-enumeration] [javascript] [info] 172.16.93.128:22 ["SSH-2.0-OpenSSH_4.7p1 Debian-8ubuntu1"]
+[ssh-diffie-hellman-logjam] [javascript] [low] 172.16.93.128:22
 [ssh-sha1-hmac-algo] [javascript] [info] 172.16.93.128:22
+[ssh-server-enumeration] [javascript] [info] 172.16.93.128:22 ["SSH-2.0-OpenSSH_4.7p1 Debian-8ubuntu1"]
 [ssh-cbc-mode-ciphers] [javascript] [low] 172.16.93.128:22
 [ssh-weak-algo-supported] [javascript] [medium] 172.16.93.128:22
-[ssh-weak-mac-algo] [javascript] [low] 172.16.93.128:22
 [ssh-weakkey-exchange-algo] [javascript] [low] 172.16.93.128:22
-[CVE-2004-2687] [tcp] [high] 172.16.93.128:3632
-[pgsql-detect] [tcp] [info] 172.16.93.128:5432
+[ssh-weak-mac-algo] [javascript] [low] 172.16.93.128:22
 [vnc-service-detect] [tcp] [info] 172.16.93.128:5900 ["RFB 003.003"]
 [esmtp-detect] [tcp] [info] 172.16.93.128:25
 [smtp-service-detect] [tcp] [info] 172.16.93.128:25
-[smtp-commands-enum:ehlo] [tcp] [info] 172.16.93.128:25 ["ETRN","STARTTLS","ENHANCEDSTATUSCODES","8BITMIME","DSN","PIPELINING","SIZE 10240000","VRFY"]
+[smtp-commands-enum:ehlo] [tcp] [info] 172.16.93.128:25 ["DSN","PIPELINING","SIZE 10240000","VRFY","ETRN","STARTTLS","ENHANCEDSTATUSCODES","8BITMIME"]
+[CVE-2004-2687] [tcp] [high] 172.16.93.128:3632
 [CVE-2011-2523] [tcp] [critical] 172.16.93.128:6200
 [ftp-anonymous-login] [tcp] [medium] 172.16.93.128:21
-[apache-detect] [http] [info] http://172.16.93.128 ["Apache/2.2.8 (Ubuntu) DAV/2"]
-[php-detect] [http] [info] http://172.16.93.128 ["5.2.4"]
-[http-missing-security-headers:clear-site-data] [http] [info] http://172.16.93.128
-[http-missing-security-headers:cross-origin-opener-policy] [http] [info] http://172.16.93.128
-[http-missing-security-headers:strict-transport-security] [http] [info] http://172.16.93.128
-[http-missing-security-headers:x-frame-options] [http] [info] http://172.16.93.128
-[http-missing-security-headers:x-permitted-cross-domain-policies] [http] [info] http://172.16.93.128
-[http-missing-security-headers:referrer-policy] [http] [info] http://172.16.93.128
+[tech-detect:php] [http] [info] http://172.16.93.128
 [http-missing-security-headers:cross-origin-embedder-policy] [http] [info] http://172.16.93.128
 [http-missing-security-headers:cross-origin-resource-policy] [http] [info] http://172.16.93.128
 [http-missing-security-headers:content-security-policy] [http] [info] http://172.16.93.128
+[http-missing-security-headers:x-permitted-cross-domain-policies] [http] [info] http://172.16.93.128
+[http-missing-security-headers:referrer-policy] [http] [info] http://172.16.93.128
+[http-missing-security-headers:clear-site-data] [http] [info] http://172.16.93.128
+[http-missing-security-headers:cross-origin-opener-policy] [http] [info] http://172.16.93.128
+[http-missing-security-headers:strict-transport-security] [http] [info] http://172.16.93.128
 [http-missing-security-headers:permissions-policy] [http] [info] http://172.16.93.128
+[http-missing-security-headers:x-frame-options] [http] [info] http://172.16.93.128
 [http-missing-security-headers:x-content-type-options] [http] [info] http://172.16.93.128
-[tech-detect:php] [http] [info] http://172.16.93.128
+[apache-detect] [http] [info] http://172.16.93.128 ["Apache/2.2.8 (Ubuntu) DAV/2"]
+[php-detect] [http] [info] http://172.16.93.128 ["5.2.4"]
