@@ -2,6 +2,8 @@ import xml.etree.ElementTree as ET
 import json
 import re
 
+from typing import List, Tuple, Any
+import ast
 
 
 def is_edb_format(value):
@@ -80,6 +82,37 @@ def nmapParsing(fichierXml):
         results.append(host_info)
 
     return json.dumps(results, indent=4)
+
+
+
+
+
+
+
+def convertTuples(input_list: List[Tuple[Any, Any, str, Any]]) -> List[Tuple[Any, Any, dict, Any]]:
+    result = []
+    for item in input_list:
+        raw_value = item[2]
+        parsed_dict = {}
+
+        if isinstance(raw_value, str):
+            try:
+                parsed_dict = json.loads(raw_value)  # Essaye JSON d'abord
+            except json.JSONDecodeError:
+                try:
+                    parsed_dict = ast.literal_eval(raw_value)  # Fallback : Python dict
+                    if not isinstance(parsed_dict, dict):
+                        raise ValueError("Not a dict")
+                except (ValueError, SyntaxError):
+                    print(f"Warning: Cannot parse {raw_value}, using empty dict.")
+        elif isinstance(raw_value, dict):
+            parsed_dict = raw_value
+        else:
+            print(f"Warning: Unsupported format {type(raw_value)}")
+
+        result.append((item[0], item[1], parsed_dict, item[3]))
+    return result
+
 
 if __name__  == "__main__":    
     print(nmapParsing("172.16.93.128Nmap.xml"))

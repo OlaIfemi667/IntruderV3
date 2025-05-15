@@ -31,6 +31,7 @@ def scans():
 @app.route("/home/scans/<scanName>")
 def scanDetail(scanName):
     scanDetail = getScansDetails(DB_PATH, scanName)
+    scanDetail = convertTuples(scanDetail)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
 @app.route("/home/scans/<scanName>/reporting")

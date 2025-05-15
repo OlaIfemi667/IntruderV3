@@ -28,7 +28,22 @@
 
         <div id="whois">
             {% for detail in scansContent%}
-                <p>{{detail}}</p>
+                <div>
+                    {% if detail[1] == 'whois'%}
+                        <h2>WHOIS RECORDS</h2>
+                        <p>{{detail[2]}}</p>
+                    {% endif %}
+
+                    {% if detail[1] == 'nmap'%}
+                        <h2>NMAP RECORDS</h2>
+                        <p>{{detail[2]}}</p>
+                    {% endif %}
+
+                    {% if detail[1] == 'nuclei'%}
+                        <h2>NUCLEI RECORDS</h2>
+                        <p>{{detail[2]}}</p>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
 
