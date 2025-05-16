@@ -31,7 +31,11 @@
                 <div>
                     {% if detail[1] == 'whois'%}
                         <h2>WHOIS RECORDS</h2>
+                        {%if detail[2]|length == 0%}
+                        <p>No juicy info found here</p>
+                        {% else %}
                         <p>{{detail[2]}}</p>
+                        {% endif %}
                     {% endif %}
 
                     {% if detail[1] == 'nmap' %}
