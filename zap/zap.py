@@ -1,38 +1,40 @@
 #!/usr/bin/env python
+# A basic ZAP Python API example which spiders and scans a target URL
+
+import time
+from pprint import pprint
 from zapv2 import ZAPv2
 
-# The URL of the application to be tested
-target = 'https://public-firing-range.appspot.com'
-# Change to match the API key set in ZAP, or use None if the API key is disabled
-apiKey = '9lcqk1g17n6kcgdrok3fcoeen9s'
-
+target = 'http://172.16.93.128'
+apikey = '9lcqk1g17n6kcgdrok3fcoeen9' # Change to match the API key set in ZAP, or use None if the API key is disabled
+#
 # By default ZAP API client will connect to port 8080
-zap = ZAPv2(apikey=apiKey)
+zap = ZAPv2(apikey=apikey)
 # Use the line below if ZAP is not listening on port 8080, for example, if listening on port 8090
-# zap = ZAPv2(apikey=apiKey, proxies={'http': 'http://127.0.0.1:8090', 'https': 'http://127.0.0.1:8090'})
+# zap = ZAPv2(apikey=apikey, proxies={'http': 'http://127.0.0.1:8090', 'https': 'http://127.0.0.1:8090'})
 
-# TODO: Check if the scanning has completed
+# Proxy a request to the target so that ZAP has something to deal with
+print('Accessing target {}'.format(target))
+zap.urlopen(target)
+# Give the sites tree a chance to get updated
+time.sleep(2)
 
-# Retrieve the alerts using paging in case there are lots of them
-st = 0
-pg = 5000
-alert_dict = {}
-alert_count = 0
-alerts = zap.alert.alerts(baseurl=target, start=st, count=pg)
-blacklist = [1,2]
-while len(alerts) > 0:
-    print('Reading ' + str(pg) + ' alerts from ' + str(st))
-    alert_count += len(alerts)
-    for alert in alerts:
-        plugin_id = alert.get('pluginId')
-        if plugin_id in blacklist:
-            continue
-        if alert.get('risk') == 'High':
-            # Trigger any relevant postprocessing
-            continue
-        if alert.get('risk') == 'Informational':
-            # Ignore all info alerts - some of them may have been downgraded by security annotations
-            continue
-    st += pg
-    alerts = zap.alert.alerts(start=st, count=pg)
-print('Total number of alerts: ' + str(alert_count))
+
+
+print ('Active Scanning target {}'.format(target))
+scanid = zap.ascan.scan(target, recurse=False)
+zap.ascan.disable_all_scanners()
+zap.ascan.enable_scanners("40012,40014,40018")  # XSS, SQLi par exemple
+
+while (int(zap.ascan.status(scanid)) < 100):
+    # Loop until the scanner has finished
+    print ('Scan progress %: {}'.format(zap.ascan.status(scanid)))
+    time.sleep(5)
+
+print ('Active Scan completed')
+
+# Report the results
+
+print ('Hosts: {}'.format(', '.join(zap.core.hosts)))
+print ('Alerts: ')
+pprint (zap.core.alerts())
