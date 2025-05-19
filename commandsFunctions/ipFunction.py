@@ -3,6 +3,7 @@ from parsing.whoisParsing import *
 from parsing.nucleiParsing import *
 from subprocessUtils.subprocess import *
 from database.database import *
+from zap.zap import *
 
 async def ipAi(ip, scanName):
 
@@ -24,6 +25,8 @@ async def ipAi(ip, scanName):
     #print(f"[+] Scan nuclei de {ip} terminé")
     
     #addProcesses(scanName, "nuclei", str(stdoutNuclei))
+
+    zap(ip, "http")
 
 
 
