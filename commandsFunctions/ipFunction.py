@@ -29,7 +29,7 @@ async def ipAi(ip, scanName):
 
     # il faut que je code le systeme pour recherche les protocoles tcp web trouvé http, https
     zapOutput = zap(ip, "http")
-    addProcesses(zapOutput, "zap")
+    addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
 
 
 
