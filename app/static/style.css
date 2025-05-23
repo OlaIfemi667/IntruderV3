@@ -92,3 +92,22 @@ li{
     text-decoration: none;
     color: pink;
 }
+
+#reportAndAi{
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#report{
+    width: 50%;
+    height: 70vh;
+    background-color: gray;
+}
+
+#aiSide{
+    width:30%;
+    height: 70vh;
+    background-color: gray;
+}
