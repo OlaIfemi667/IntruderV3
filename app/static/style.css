@@ -36,15 +36,15 @@ a{
 }
 nav a{
     padding: 10px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 200px;
+    padding-right: 200px;
     text-decoration: none;
     color: white;
 }
 nav a:hover{
     padding: 10px;
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 200px;
+    padding-right: 200px;
     text-decoration: none;
     background-color: white;
     color: black;
