@@ -14,6 +14,7 @@
             <a href="/home">Intruder</a>
             <a href="/home/scans">Scans</a>
             <a href="/home/reports">Reports</a>
+            <a href="/home/docs">Documentation</a>
         </nav>
 
         
@@ -25,6 +26,7 @@
         </div>
         <h2>Scans</h2>
         <p>This is scan id : {{scan}}</p>
+        
 
         <div id="whois">
             {% for detail in scansContent%}
@@ -103,11 +105,10 @@
                     
                 </div>
             {% endfor %}
+
+            <a href="/home/scans/{{scan}}/reporting">Generate a report for this scan</a>
         </div>
 
-        <div id="nmap">
-
-        </div>
 
 
     </div>

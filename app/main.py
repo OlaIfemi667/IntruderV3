@@ -45,6 +45,10 @@ def reports():
     return render_template("reportsBase.html")
 
 
+@app.route("/home/docs")
+def documentation():
+    return render_template("documentation.html")
+
 if __name__ == "__main__":
     app()
 
