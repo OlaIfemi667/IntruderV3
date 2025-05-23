@@ -69,6 +69,36 @@
                         {% endif %}
                     {% endif %}
 
+                    {% if detail[1] == 'zap' %}
+                        <h3>ZAP SCAN RESULTS</h3>
+                        {% if detail[2]|length == 0 %}
+                            <p>No findings reported.</p>
+                        {% else %}
+                            <ul>
+                                {% for alert in detail[2] %}
+                                    <li>
+                                        <details>
+                                            <summary><strong>{{ alert.name }}</strong> — Risk: {{ alert.risk }}</summary>
+                                            <p><strong>Description:</strong> {{ alert.description }}</p>
+                                            <p><strong>Solution:</strong> {{ alert.solution }}</p>
+                                            {% if alert.url %}
+                                                <p><strong>URL:</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
+                                            {% endif %}
+                                            {% if alert.reference %}
+                                                <p><strong>Reference:</strong> 
+                                                    {% for ref in alert.reference.split('\n') %}
+                                                        <br><a href="{{ ref }}" target="_blank">{{ ref }}</a>
+                                                    {% endfor %}
+                                                </p>
+                                            {% endif %}
+                                        </details>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endif %}
+
+
 
                     
                 </div>

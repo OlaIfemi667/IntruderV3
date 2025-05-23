@@ -16,6 +16,8 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    background-color: black;
+    color: white;
 }
 #main{
     padding: 40px;
@@ -23,22 +25,29 @@ body{
 nav{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     position: sticky;
     top: 0;
 
 }
-
+a{
+    text-decoration: none;
+    color: pink;
+}
 nav a{
     padding: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
     text-decoration: none;
-    color: black;
+    color: white;
 }
 nav a:hover{
     padding: 10px;
+    padding-left: 100px;
+    padding-right: 100px;
     text-decoration: none;
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
 }
 
 #filAriane{
@@ -60,7 +69,7 @@ nav a:hover{
     padding-left: 30px;
 }
 
-#portDetail ul li{
+li{
     padding-left: 30px;
     list-style: none;
 }
@@ -75,4 +84,11 @@ nav a:hover{
     text-decoration: none;
     color: gray;
     opacity: 0.5;
+}
+
+
+
+#indexUL a{
+    text-decoration: none;
+    color: pink;
 }

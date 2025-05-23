@@ -97,3 +97,5 @@ def getScansDetails(db_path='database.db', scanName="default"):
     except Exception as e:
         print(f"[!] Unexpected error: {e}")
     return ["default"]
+
+
