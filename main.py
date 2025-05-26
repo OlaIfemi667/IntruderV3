@@ -6,7 +6,6 @@ from subprocessUtils.subprocess import * #for  subprocess handling
 from parsing.whoisParsing import * #to parse whois output
 from parsing.nmapParsing import * #to parse nmap
 from commandsFunctions.ipFunction import * #logique when only ip is provide
-from database.database import * #for db SQLite operations
 
 
 init_db() # this line is so obvious

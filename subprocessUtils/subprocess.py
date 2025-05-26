@@ -1,5 +1,6 @@
 import asyncio
 from urllib.parse import urlparse
+from ai.ai import *
 
 
 #mes packages
