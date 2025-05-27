@@ -27,8 +27,8 @@
         <h2>Scans</h2>
         <p>This is scan id : {{scan}}</p>
         
-
-        <div id="whois">
+        <div id="mainView">
+            <div id="infoScan">
             {% for detail in scansContent%}
                 <div>
                     {% if detail[1] == 'whois'%}
@@ -106,9 +106,41 @@
                 </div>
             {% endfor %}
 
+            
+
             <a href="/home/scans/{{scan}}/reporting">See the report for this scan</a>
         </div>
+        <div id="ai">
+            
+            <div id="aiResponse">
+                <p>AI: {{response}}</p>
+            </div>
+            <div id="aiFooter">
+                <form action="" id="aiForm" method="post">
+                    <input type="text" id="aiInput" name="iaInput" placeholder="Ask a question..." required>
+                    <input type="submit" value="submit" name="asking">
+                </form>
+                <p>Powered by <a href="https://ollama.com/" target="_blank">Ollama</a></p>
+            </div>
 
+            
+            
+            <script>
+                document.getElementById('aiForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const question = document.getElementById('aiInput').value;
+                    const responseDiv = document.getElementById('aiResponse');
+                    
+                    // Simulate AI response
+                    responseDiv.innerHTML = `<p>AI Response to: <strong>${question}</strong></p>`;
+                    
+                    // Here you would typically send the question to your backend AI service
+                    // and update the responseDiv with the actual AI response.
+                });
+            </script>
+        </div>
+        </div>
+        
 
 
     </div>

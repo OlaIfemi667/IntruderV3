@@ -2,3 +2,4 @@ flask
 typer
 zaproxy
 openai
+weasyprint

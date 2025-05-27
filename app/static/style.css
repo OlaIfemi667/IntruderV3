@@ -138,3 +138,32 @@ li{
     color: black;
     border: 1px solid black;
 }
+
+#infoScan{
+    width: 60%;
+    height: 70vh;
+}
+
+#ai{
+    width: 30%;
+    height: 70vh;
+    background-color: rgb(59, 59, 59);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mainView{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#aiForm{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+}
+

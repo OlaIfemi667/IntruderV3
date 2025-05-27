@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 import os
+from weasyprint import HTML
+import io
 
 
 #my packages
@@ -8,6 +10,10 @@ from parsing.whoisParsing import * #to parse whois output
 from parsing.nmapParsing import * #to parse nmap
 from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
+
+#fontion for IA
+from ai.ai import getResponseFromAI
+
 
 
 app = Flask(__name__)
@@ -28,17 +34,30 @@ def scans():
     return render_template("scans.html", content = scans )
 
 
-@app.route("/home/scans/<scanName>")
+@app.route("/home/scans/<scanName>", methods=['POST', 'GET'])
 def scanDetail(scanName):
     scanDetail = getScansDetails(DB_PATH, scanName)
     scanDetail = convertTuples(scanDetail)
+
+    
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
 @app.route("/home/scans/<scanName>/reporting")
 def reporting(scanName):
-    return render_template("reportingBase.html")
+    return render_template("reportingBase.html", scan=scanName)
 
+@app.route("/home/scans/<scanName>/reporting/export")
+def export_report(scanName):
+    scanDetail = getScansDetails(DB_PATH, scanName)
+    scanDetail = convertTuples(scanDetail)
+    
 
+    html_content = render_template("scanBase.html", scan=scanName, scansContent=scanDetail)
+    pdf_file = HTML(string=html_content).write_pdf()
+    return io.BytesIO(pdf_file), 200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': f'attachment; filename="{scanName}_report.pdf"'
+    }
 
 @app.route("/home/reports")
 def reports():
