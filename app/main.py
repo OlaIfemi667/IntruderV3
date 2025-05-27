@@ -39,7 +39,12 @@ def scanDetail(scanName):
     scanDetail = getScansDetails(DB_PATH, scanName)
     scanDetail = convertTuples(scanDetail)
 
-    
+    if request.method == 'POST':
+        if "asking" in request.form:
+            print("Form submitted")
+            question = request.form.get("iaInput")
+            response = getResponseFromAI(question, scanDetail)
+            return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
 @app.route("/home/scans/<scanName>/reporting")
