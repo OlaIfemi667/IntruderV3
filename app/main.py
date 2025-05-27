@@ -44,7 +44,7 @@ def scanDetail(scanName):
             print("Form submitted")
             question = request.form.get("iaInput")
             response = getResponseFromAI(question, scanDetail)
-            return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response)
+            return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response, question=question)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
 @app.route("/home/scans/<scanName>/reporting")

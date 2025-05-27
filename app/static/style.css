@@ -142,6 +142,9 @@ li{
 #infoScan{
     width: 60%;
     height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #ai{
@@ -152,6 +155,17 @@ li{
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+}
+
+.Response{
+    padding: 10px; 
+    background-color: gray; 
+    border: 1px solid black; 
+    margin-bottom: 10px;
+    max-width: 100%;
+}
+.Response:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 #mainView{
