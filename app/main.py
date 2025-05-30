@@ -64,9 +64,9 @@ def export_report(scanName):
         'Content-Disposition': f'attachment; filename="{scanName}_report.pdf"'
     }
 
-@app.route("/home/reports")
+""" @app.route("/home/reports")
 def reports():
-    return render_template("reportsBase.html")
+    return render_template("reportsBase.html") """
 
 
 @app.route("/home/docs")
