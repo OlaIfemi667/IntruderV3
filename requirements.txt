@@ -3,3 +3,5 @@ typer
 zaproxy
 openai
 weasyprint
+grop 
+python-dotenv

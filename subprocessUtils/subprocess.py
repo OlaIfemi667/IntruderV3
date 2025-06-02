@@ -9,14 +9,14 @@ from parsing.nucleiParsing import *
 
 
 
-async def runCommand(cmd, type):
+
+async def runCommand(cmd, name):
     proc = await asyncio.create_subprocess_shell(
         cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
 
     stdout, stderr = await proc.communicate()
-    a = ""
     print(f'[{cmd!r} exited with {proc.returncode}]')
     
     #ici j'ai retourné stdout et err pour les utiliser dans les autres fonctions

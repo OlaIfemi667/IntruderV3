@@ -167,6 +167,8 @@ li{
     border: 1px solid black; 
     margin-bottom: 10px;
     max-width: 100%;
+    white-space: pre-wrap; /* pour conserver les sauts de ligne */
+    word-wrap: break-word; /* pour gérer les mots longs */
 }
 .Response:hover{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -185,3 +187,9 @@ li{
     gap: 10px;
 }
 
+
+#aiResponse {
+    max-height: 80%; /* ou plus selon ton design */
+    overflow-y: auto;
+    padding-right: 10px; /* pour l'espace scrollbar */
+}

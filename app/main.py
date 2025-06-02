@@ -47,11 +47,11 @@ def scanDetail(scanName):
             return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response, question=question)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail)
 
-@app.route("/home/scans/<scanName>/reporting")
+""" @app.route("/home/scans/<scanName>/reporting")
 def reporting(scanName):
-    return render_template("reportingBase.html", scan=scanName)
+    return render_template("reportingBase.html", scan=scanName) """
 
-@app.route("/home/scans/<scanName>/reporting/export")
+@app.route("/home/scans/<scanName>/export")
 def export_report(scanName):
     scanDetail = getScansDetails(DB_PATH, scanName)
     scanDetail = convertTuples(scanDetail)
