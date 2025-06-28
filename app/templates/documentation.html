@@ -3,75 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intruder - Documentation</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script src="{{ url_for('static', filename='main.js') }}" defer></script>
-    <title>Intruder's Documentation</title>
 </head>
 <body>
     <header>
         <nav>
-            <a href="/home">Intruder</a>
-            <a href="/home/scans">Scans</a>
-            <a href="/home/docs">Documentation</a>
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                Intruder
+            </div>
+            <ul class="nav-links">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/home/scans">Scans</a></li>
+                <li><a href="/home/docs" class="active">Documentation</a></li>
+            </ul>
         </nav>
     </header>
 
-    
-    <div id="IntruderDocs">
-        <h1>What is Intruder?</h1>
-        <p>Intruder is a tool that automate footprinting phase in pentesting process.</p>
-        <p>It is code in python and uses tools like nmap, exploit-db, zap, whois</p>
-    </div>
+    <div class="container">
+        <!-- Fil d'ariane -->
+        <div class="breadcrumb" style="margin-bottom: 1.5rem;">
+            <a href="/home">Home</a> /
+            <a href="/home/docs" class="active">Documentation</a>
+        </div>
 
-    <div id="Reconnaissance" style="padding: 20px;">
-        <h2>Key Penetration Testing Phases</h2>
-        
-        <section class="phase">
-            <h3>1. Footprinting & Reconnaissance</h3>
-            <p>The initial phase of gathering information about the target system, including:</p>
+        <!-- Titre principal -->
+        <div class="page-header">
+            <h1 class="page-title">What is Intruder?</h1>
+            <p class="page-subtitle">Automating the footprinting phase of penetration testing</p>
+        </div>
+
+        <!-- Présentation -->
+        <div class="action-card" style="margin-bottom: 2rem;">
+            <p>Intruder is a tool written in Python that automates the early phases of a penetration test, such as reconnaissance and scanning.</p>
+            <p>It integrates tools like <strong>Nmap</strong>, <strong>Exploit-DB</strong>, <strong>WHOIS</strong>, and <strong>OWASP ZAP</strong> to simplify tasks, and leverages an LLM for intelligent analysis and reporting.</p>
+        </div>
+
+        <!-- Phases -->
+        <div class="action-card" style="margin-bottom: 2rem;">
+            <h2 class="action-title">Key Penetration Testing Phases</h2>
+
+            <section class="phase">
+                <h3>1. Footprinting & Reconnaissance</h3>
+                <ul>
+                    <li>Network enumeration</li>
+                    <li>Domain information gathering</li>
+                    <li>WHOIS lookups</li>
+                    <li>DNS enumeration</li>
+                    <li>Port scanning</li>
+                    <li>Service identification</li>
+                </ul>
+            </section>
+
+            <section class="phase" style="margin-top: 1rem;">
+                <h3>2. Scanning</h3>
+                <ul>
+                    <li>Open ports and services</li>
+                    <li>Operating system detection</li>
+                    <li>Vulnerability scanning</li>
+                    <li>Network mapping</li>
+                </ul>
+            </section>
+
+            <section class="phase" style="margin-top: 1rem;">
+                <h3>3. Enumeration</h3>
+                <ul>
+                    <li>User accounts</li>
+                    <li>Machine names</li>
+                    <li>Network resources</li>
+                    <li>Services and applications</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- Fonctionnement -->
+        <div class="action-card">
+            <h2 class="action-title">How does it work?</h2>
+            <p>Intruder acts as a wrapper around essential security tools:</p>
             <ul>
-                <li>Network enumeration</li>
-                <li>Domain information gathering</li>
-                <li>WHOIS lookups</li>
-                <li>DNS enumeration</li>
-                <li>Port scanning</li>
-                <li>Service identification</li>
+                <li><strong>Nmap</strong> for scanning ports and services</li>
+                <li><strong>WHOIS</strong> for domain registration data</li>
+                <li><strong>Exploit-DB</strong> for known vulnerabilities</li>
+                <li><strong>OWASP ZAP</strong> for web application analysis</li>
             </ul>
-        </section>
+            <p>Results from these tools are interpreted using a Large Language Model to assist the user in report generation and understanding the risks.</p>
+        </div>
 
-        <section class="phase">
-            <h3>2. Scanning</h3>
-            <p>Active probing of target systems to identify:</p>
-            <ul>
-                <li>Open ports and services</li>
-                <li>Operating system detection</li>
-                <li>Vulnerability scanning</li>
-                <li>Network mapping</li>
-            </ul>
-        </section>
-
-        <section class="phase">
-            <h3>3. Enumeration</h3>
-            <p>Detailed information gathering about:</p>
-            <ul>
-                <li>User accounts</li>
-                <li>Machine names</li>
-                <li>Network resources</li>
-                <li>Services and applications</li>
-            </ul>
-        </section>
+        <div class="footer">
+            <p class="footer-text">Intruder - Automated Penetration Testing Framework</p>
+        </div>
     </div>
-    <div id="howWork">
-        <h2>How  does it work?</h2>
-        <section id="utils">
-            <p>Intruder is basically a kind of wrapper, it uses nmap, whois, exploit-db and ZAP api  </p>
-            <p>to automate some pentests tasks and an LLM for best reports and for chat</p>
-            <div>Nmap</div>
-            <div></div>
-            <div></div>
-        </section>
-    </div>
-
-    <div ></div>
 </body>
 </html>

@@ -3,148 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intruder's scan</title>
+    <title>Intruder - Scan {{ scan }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-    
 </head>
 <body>
     <header>
         <nav>
-            <a href="/home">Intruder</a>
-            <a href="/home/scans">Scans</a>
-            <a href="/home/docs">Documentation</a>
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                Intruder
+            </div>
+            <ul class="nav-links">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/home/scans" class="active">Scans</a></li>
+                <li><a href="/home/docs">Documentation</a></li>
+            </ul>
         </nav>
-
-        
     </header>
-    <div id="main">
 
-        <div id="filAriane">
-            <a href="/home">Home /</a><a href="/home/scans">Scans /</a><a href="/home/scans/{{scan}}">{{scan}} /</a>
+    <div class="container">
+        <!-- Fil d'Ariane -->
+        <div class="breadcrumb" style="margin-bottom: 1.5rem;">
+            <a href="/home">Home</a> /
+            <a href="/home/scans">Scans</a> /
+            <a href="/home/scans/{{ scan }}" class="active">{{ scan }}</a>
         </div>
-        <h2>Scans</h2>
-        <p>This is scan id : {{scan}}</p>
-        
-        <div id="mainView">
-            <div id="infoScan">
-            {% for detail in scansContent%}
-                <div>
-                    {% if detail[1] == 'whois'%}
-                        <h2>WHOIS RECORDS</h2>
-                        {%if detail[2]|length == 0%}
-                        <p>No juicy info found here</p>
-                        {% else %}
-                        <p>{{detail[2]}}</p>
+
+        <div class="page-header">
+            <h1 class="page-title">Scan: {{ scan }}</h1>
+            <p class="page-subtitle">Detailed analysis and findings</p>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+            <!-- Résultats de scan -->
+            <div style="flex: 1 1 60%;">
+                {% for detail in scansContent %}
+                    <div class="action-card" style="margin-bottom: 2rem;">
+                        {% if detail[1] == 'whois' %}
+                            <h2 class="action-title">WHOIS Records</h2>
+                            <p class="action-description">
+                                {{ detail[2] if detail[2]|length > 0 else "No juicy info found here" }}
+                            </p>
                         {% endif %}
-                    {% endif %}
 
-                    {% if detail[1] == 'nmap' %}
-                        <h3>NMAP RECORDS</h3>
-
-                        {% if detail[2]|length == 0 %}
-                            <p>No juicy info found here</p>
-                        {% else %}
-                            {% set scan = detail[2][0] %}
-                            <details>
-                                <summary>IP: {{ scan["ip"] }}</summary>
-                                {% for port in scan["ports"] %}
-                                    <details id="portDetail">
-                                        <summary>Port {{ port["port"] }}</summary>
-                                        {% if port["edb_ids"] %}
-                                            <ul>
-                                                {% for edbId in port["edb_ids"] %}
-                                                    <li>
-                                                        <a href="https://www.exploit-db.com/exploits/{{ edbId }}" target="_blank">
-                                                            Exploit #{{ edbId }}
-                                                        </a>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        {% else %}
-                                            <p>No known exploits.</p>
-                                        {% endif %}
-                                    </details>
-                                {% endfor %}
-                            </details>
-                        {% endif %}
-                    {% endif %}
-
-                    {% if detail[1] == 'zap' %}
-                        <h3>ZAP SCAN RESULTS</h3>
-                        {% if detail[2]|length == 0 %}
-                            <p>No findings reported.</p>
-                        {% else %}
-                            <ul>
-                                {% for alert in detail[2] %}
-                                    <li>
-                                        <details>
-                                            <summary><strong>{{ alert.name }}</strong> — Risk: {{ alert.risk }}</summary>
-                                            <p><strong>Description:</strong> {{ alert.description }}</p>
-                                            <p><strong>Solution:</strong> {{ alert.solution }}</p>
-                                            {% if alert.url %}
-                                                <p><strong>URL:</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
-                                            {% endif %}
-                                            {% if alert.reference %}
-                                                <p><strong>Reference:</strong> 
-                                                    {% for ref in alert.reference.split('\n') %}
-                                                        <br><a href="{{ ref }}" target="_blank">{{ ref }}</a>
+                        {% if detail[1] == 'nmap' %}
+                            <h2 class="action-title">Nmap Scan</h2>
+                            {% if detail[2]|length == 0 %}
+                                <p class="action-description">No juicy info found here</p>
+                            {% else %}
+                                {% set scan = detail[2][0] %}
+                                <details>
+                                    <summary><strong>IP:</strong> {{ scan["ip"] }}</summary>
+                                    {% for port in scan["ports"] %}
+                                        <details style="margin-left: 1rem;">
+                                            <summary>Port {{ port["port"] }}</summary>
+                                            {% if port["edb_ids"] %}
+                                                <ul>
+                                                    {% for edbId in port["edb_ids"] %}
+                                                        <li>
+                                                            <a href="https://www.exploit-db.com/exploits/{{ edbId }}" target="_blank">
+                                                                Exploit #{{ edbId }}
+                                                            </a>
+                                                        </li>
                                                     {% endfor %}
-                                                </p>
+                                                </ul>
+                                            {% else %}
+                                                <p>No known exploits.</p>
                                             {% endif %}
                                         </details>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                                    {% endfor %}
+                                </details>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
+                        {% if detail[1] == 'zap' %}
+                            <h2 class="action-title">ZAP Scan</h2>
+                            {% if detail[2]|length == 0 %}
+                                <p class="action-description">No findings reported.</p>
+                            {% else %}
+                                <ul>
+                                    {% for alert in detail[2] %}
+                                        <li style="margin-bottom: 1rem;">
+                                            <details>
+                                                <summary><strong>{{ alert.name }}</strong> — Risk: {{ alert.risk }}</summary>
+                                                <p><strong>Description:</strong> {{ alert.description }}</p>
+                                                <p><strong>Solution:</strong> {{ alert.solution }}</p>
+                                                {% if alert.url %}
+                                                    <p><strong>URL:</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
+                                                {% endif %}
+                                                {% if alert.reference %}
+                                                    <p><strong>Reference:</strong>
+                                                        {% for ref in alert.reference.split('\n') %}
+                                                            <br><a href="{{ ref }}" target="_blank">{{ ref }}</a>
+                                                        {% endfor %}
+                                                    </p>
+                                                {% endif %}
+                                            </details>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                {% endfor %}
 
-
-                    
+                <!-- Bouton rapport -->
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="/home/scans/{{ scan }}/export" class="action-card" style="display: inline-block; padding: 1rem 2rem;">
+                        <i class="fas fa-download action-icon"></i>
+                        <h3 class="action-title">Download Report</h3>
+                    </a>
                 </div>
-            {% endfor %}
-
-            
-
-            <a href="/home/scans/{{scan}}/export">Get the report for this scan</a>
-        </div>
-        <div id="ai"  style="border: 2px solid white; padding: 20px; margin-top: 20px; ">
-            
-            <div id="aiResponse">
-                {% if response %}
-                    <p class="Response">User: {{question}}</p>
-                    <p class="Response">AI: {{ response }}</p>
-                {% else %}
-                    <p>Ask a question</p>
-                {% endif %}
-            </div>
-            <div id="aiFooter">
-                <form action="" id="aiForm" method="post" >
-                    <input type="text" id="aiInput" name="iaInput" placeholder="Ask a question..." required>
-                    <input type="submit" value="submit" name="asking">
-                </form>
-                <p>Powered by <a href="https://openai" target="_blank">Ollama</a></p>
             </div>
 
-            
-            
-            <script>
-                document.getElementById('aiForm').addEventListener('submit', function(event) {
-                    
-                    const question = document.getElementById('aiInput').value;
-                    const responseDiv = document.getElementById('aiResponse');
-                    
-                    // Simulate AI response
-                    // Here you would typically send the question to your backend AI service
-                    // and update the responseDiv with the actual AI response.
-                });
-            </script>
-        </div>
-        </div>
-        
+            <!-- Chatbot IA -->
+            <div style="flex: 1 1 35%;">
+                <div id="ai" class="action-card" style="padding: 1.5rem; margin-top: 1rem; position: sticky; top: 100px;">
+                    <h2 class="action-title" style="margin-bottom: 1rem;">AI Assistant</h2>
 
+                    <div id="aiResponse" style="margin-bottom: 1rem; max-height: 300px; overflow-y: auto; background: var(--accent-bg); padding: 1rem; border-radius: 8px; white-space: pre-wrap;">
+                        {% if response %}
+                            <p><strong>User:</strong> {{ question }}</p>
+                            <p><strong>AI:</strong> {{ response }}</p>
+                        {% else %}
+                            <p>Ask a question below to get started</p>
+                        {% endif %}
+                    </div>
 
+                    <div id="aiFooter">
+                        <form action="" id="aiForm" method="post" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <input type="text" id="aiInput" name="iaInput" placeholder="Ask a question..." required
+                                style="padding: 0.75rem; border: none; border-radius: 8px; background: var(--accent-bg); color: var(--primary-text);">
+                            <input type="submit" value="Submit" name="asking"
+                                style="padding: 0.6rem; border: none; border-radius: 8px; background: var(--accent-color); color: #000; font-weight: bold; cursor: pointer;">
+                        </form>
+
+                        <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--secondary-text);">
+                            Powered by <a href="https://ollama.ai" target="_blank" style="color: var(--accent-color);">Ollama</a>
+                        </p>
+                    </div>
+
+                    <script>
+                        document.getElementById('aiForm').addEventListener('submit', function (event) {
+                            // Optional client-side behavior, real handling is server-side
+                            const question = document.getElementById('aiInput').value;
+                            const responseDiv = document.getElementById('aiResponse');
+                            // Simulate loading/response handling if needed
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p class="footer-text">Intruder - Automated Penetration Testing Framework</p>
+        </div>
     </div>
 </body>
 </html>

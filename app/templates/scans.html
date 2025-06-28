@@ -3,33 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intruder's scans</title>
+    <title>Intruder - All Scans</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
-   
 </head>
 <body>
     <header>
         <nav>
-            <a href="/home">Intruder</a>
-            <a href="/home/scans">Scans</a>
-            <a href="/home/docs">Documentation</a>
+            <div class="logo">
+                <i class="fas fa-shield-halved"></i>
+                Intruder
+            </div>
+            <ul class="nav-links">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/home/scans" class="active">Scans</a></li>
+                <li><a href="/home/docs">Documentation</a></li>
+            </ul>
         </nav>
-
-        
     </header>
-    <div id="main">
-        <div id="filAriane">
-            <a href="/home">Home /</a><a href="/home/scans">Scans /</a>
+
+    <div class="container">
+        <div class="breadcrumb" style="margin-bottom: 1.5rem;">
+            <a href="/home">Home</a> /
+            <a href="/home/scans" class="active">Scans</a>
         </div>
-        <h2>Scans</h2>
-        <p>See all your scans here</p>
-        <ul>
-            {% for scan in content%}
-                <li><a href="/home/scans/{{scan}}">{{scan}}</a></li>
-            {%endfor%}
-        </ul>
-        
+
+        <div class="page-header">
+            <h1 class="page-title">Scan History</h1>
+            <p class="page-subtitle">Browse all your completed and ongoing scans</p>
+        </div>
+
+        {% if content %}
+            <div class="actions-grid">
+                {% for scan in content %}
+                    <a href="/home/scans/{{ scan }}" class="action-card">
+                        <div class="status-indicator"></div>
+                        <i class="fas fa-terminal action-icon"></i>
+                        <h3 class="action-title">{{ scan }}</h3>
+                        <p class="action-description">
+                            View details and results for this scan
+                        </p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align:center; color: var(--secondary-text); margin-top: 2rem;">
+                No scans found.
+            </p>
+        {% endif %}
+
+        <div class="footer">
+            <p class="footer-text">Intruder - Automated Penetration Testing Framework</p>
+        </div>
     </div>
+
+    <script>
+        // Highlight active link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+    </script>
 </body>
 </html>
