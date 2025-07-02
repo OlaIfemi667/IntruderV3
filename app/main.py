@@ -73,6 +73,34 @@ def reports():
 def documentation():
     return render_template("documentation.html")
 
+
+@app.route("/home/scans/<scanName>/delete", methods=["POST"])
+def delete_scan(scanName):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM PROCESSES WHERE nameScan = ?", (scanName,))
+        cursor.execute("DELETE FROM SCANS WHERE scanName = ?", (scanName,))
+        conn.commit()
+        conn.close()
+        return render_template("scans.html", content=getScans(DB_PATH))
+    except Exception as e:
+        return f"Error deleting scan: {e}"
+
+
+@app.route("/home/scans/delete_all", methods=["POST"])
+def delete_all_scans():
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM PROCESSES")
+        cursor.execute("DELETE FROM SCANS")
+        conn.commit()
+        conn.close()
+        return render_template("scans.html", content=getScans(DB_PATH))
+    except Exception as e:
+        return f"Error deleting all scans: {e}"
+
 if __name__ == "__main__":
     app()
 

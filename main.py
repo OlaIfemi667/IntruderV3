@@ -17,6 +17,9 @@ def checkRequiredSysBin():
         if not shutil.which(bin_name):
             typer.echo(f"Error: {bin_name} is not installed or not found in PATH.")
             return False
+        else:
+            typer.echo(f"{bin_name} is installed.")
+            return True
 
 init_db() # this line is so obvious
 app = typer.Typer()
@@ -28,6 +31,9 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
     print(f"Scan name: {name}")
     
     #stdoutNuc, stderrNuc = asyncio.run(nuclei(ip))
+    if checkScanExists(name) == True:
+        print(f"[!] Scan with name {name} already exists. Please choose a different name.")
+        return
     if ip and domain == "None":
         #faire un ping
         stdoutPing, stderrPing = asyncio.run(doPing(ip))

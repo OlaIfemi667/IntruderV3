@@ -6,7 +6,7 @@ from database.database import *
 from zap.zap import *
 
 async def ipAi(ip, scanName, domain):
-
+    
     # faire un whois
     #stdoutWhois, stderrWhois = await doWhois(ip)
     #print(f"[+] Recherche enregistrement DNS de {ip} terminé")
@@ -30,9 +30,9 @@ async def ipAi(ip, scanName, domain):
     # il faut que je code le systeme pour recherche les protocoles tcp web trouvé http, https
 
     # ajouter les result
+    addScan(scanName, ip, domain)
     zapOutput = zap(ip, "http")
 
-    addScan(scanName, ip, domain)
     #addProcesses(scanName, "whois", str(parsedWhois))
     addProcesses(scanName, "nmap", stdoutNmap)
     addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))

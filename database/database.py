@@ -49,6 +49,19 @@ def addScan(name, ip, domain, db_path='database.db'):
         print(f"[!] Erreur inattendue: {e}")
     return False
 
+def checkScanExists(name, db_path='database.db'):
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM SCANS WHERE scanName = ?", (name,))
+            count = cursor.fetchone()[0]
+            return count > 0
+    except sqlite3.Error as e:
+        print(f"[!] Database error: {e}")
+    except Exception as e:
+        print(f"[!] Unexpected error: {e}")
+    return False
+
 
 def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
     try:
