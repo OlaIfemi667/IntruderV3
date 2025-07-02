@@ -15,7 +15,7 @@ def zap(ip, webProtocol):
 
 
     target = f"{webProtocol}://{ip}"
-    apikey = '9lcqk1g17n6kcgdrok3fcoeen9' # Change to match the API key set in ZAP, or use None if the API key is disabled
+    apikey = 'a3vb0hvphqbu7ruhvpql9l5ufm' # Change to match the API key set in ZAP, or use None if the API key is disabled
     #
     # By default ZAP API client will connect to port 8080
     zap = ZAPv2(apikey=apikey)

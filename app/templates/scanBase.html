@@ -39,12 +39,12 @@
             <div style="flex: 1 1 60%;">
                 {% for detail in scansContent %}
                     <div class="action-card" style="margin-bottom: 2rem;">
-                        {% if detail[1] == 'whois' %}
+                        <!--{% if detail[1] == 'whois' %}
                             <h2 class="action-title">WHOIS Records</h2>
                             <p class="action-description">
                                 {{ detail[2] if detail[2]|length > 0 else "No juicy info found here" }}
                             </p>
-                        {% endif %}
+                        {% endif %} -->
 
                         {% if detail[1] == 'nmap' %}
                             <h2 class="action-title">Nmap Scan</h2>
@@ -56,7 +56,7 @@
                                     <summary><strong>IP:</strong> {{ scan["ip"] }}</summary>
                                     {% for port in scan["ports"] %}
                                         <details style="margin-left: 1rem;">
-                                            <summary>Port {{ port["port"] }}</summary>
+                                            <summary>Port {{ port["port"] }}: {{ port["service"] }}  {{ port["product"] }}  {{ port["version"] }}</summary>
                                             {% if port["edb_ids"] %}
                                                 <ul>
                                                     {% for edbId in port["edb_ids"] %}
@@ -156,7 +156,7 @@
         </div>
 
         <div class="footer">
-            <p class="footer-text">Intruder - Automated Penetration Testing Framework</p>
+            <p class="footer-text">Intruder - Automated Penetration Testing Tool</p>
         </div>
     </div>
 </body>

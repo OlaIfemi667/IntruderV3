@@ -1,4 +1,5 @@
 import typer
+import shutil
 from typing import Annotated
 
 #my packages
@@ -9,6 +10,14 @@ from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
 
 
+def checkRequiredSysBin():
+    # Ici je vérifie si les binaires requis sont installés
+    required_bins = ["nmap", "zaproxy"]
+    for bin_name in required_bins:
+        if not shutil.which(bin_name):
+            typer.echo(f"Error: {bin_name} is not installed or not found in PATH.")
+            return False
+
 init_db() # this line is so obvious
 app = typer.Typer()
 
@@ -17,7 +26,7 @@ app = typer.Typer()
 @app.command()
 def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[str, typer.Argument(help="IP address to scan")], domain: Annotated[str, typer.Option(help="domain to scan")] = "None"):
     print(f"Scan name: {name}")
-    addScan(name, ip, domain)
+    
     #stdoutNuc, stderrNuc = asyncio.run(nuclei(ip))
     if ip and domain == "None":
         #faire un ping
@@ -25,7 +34,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
         #si ping réussi
         if stdoutPing:
-            asyncio.run(ipAi(ip, name))
+            asyncio.run(ipAi(ip, name, domain))
 
 
     elif ip and domain != "None":
@@ -37,4 +46,7 @@ def report( scanName: Annotated[str, typer.Argument(help="domains to scan to sca
     print(f"report {scanName}")
 
 if __name__ ==  "__main__":
-    app()
+    if  checkRequiredSysBin() == True:
+        app()
+    else:
+        typer.echo("Required binaries are not installed. Please install them and try again.")

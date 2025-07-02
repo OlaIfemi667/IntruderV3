@@ -5,20 +5,20 @@ from subprocessUtils.subprocess import *
 from database.database import *
 from zap.zap import *
 
-async def ipAi(ip, scanName):
+async def ipAi(ip, scanName, domain):
 
     # faire un whois
-    stdoutWhois, stderrWhois = await doWhois(ip)
-    print(f"[+] Recherche enregistrement DNS de {ip} terminé")
-    parsedWhois = whoisParsing(stderrWhois)
-    print(parsedWhois)
-    addProcesses(scanName, "whois", str(parsedWhois))
+    #stdoutWhois, stderrWhois = await doWhois(ip)
+    #print(f"[+] Recherche enregistrement DNS de {ip} terminé")
+    #parsedWhois = whoisParsing(stderrWhois)
+    #print(parsedWhois)
+    
 
     # faire un scan de ports
     stdoutNmap, stderrNmap = await doNmap(ip)
     print(f"[+] Scan nmap de {ip} terminé")
     
-    addProcesses(scanName, "nmap", stdoutNmap)
+    
 
     #faire le scan de vuln avec nuclei
     #stdoutNuclei, stderrNuclei = await nuclei(ip)
@@ -28,7 +28,13 @@ async def ipAi(ip, scanName):
 
 
     # il faut que je code le systeme pour recherche les protocoles tcp web trouvé http, https
+
+    # ajouter les result
     zapOutput = zap(ip, "http")
+
+    addScan(scanName, ip, domain)
+    #addProcesses(scanName, "whois", str(parsedWhois))
+    addProcesses(scanName, "nmap", stdoutNmap)
     addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
 
 
