@@ -43,13 +43,10 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
             asyncio.run(ipAi(ip, name, domain))
 
 
-    elif ip and domain != "None":
-        print("ls")
-
-
 @app.command()
-def report( scanName: Annotated[str, typer.Argument(help="domains to scan to scan OS")]):
-    print(f"report {scanName}")
+def
+
+
 
 if __name__ ==  "__main__":
     if  checkRequiredSysBin() == True:
