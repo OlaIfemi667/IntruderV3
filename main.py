@@ -43,9 +43,6 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
             asyncio.run(ipAi(ip, name, domain))
 
 
-@app.command()
-def
-
 
 
 if __name__ ==  "__main__":
