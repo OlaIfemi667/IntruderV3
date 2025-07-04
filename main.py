@@ -46,6 +46,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
 @app.command()
 def web():
+    # Pour lancer l'application web
     typer.echo("Starting web application...")
     web_app.run()
 
