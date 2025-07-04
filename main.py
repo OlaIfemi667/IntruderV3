@@ -47,7 +47,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 @app.command()
 def web():
     typer.echo("Starting web application...")
-    web_app.run(debug=True, host="127.0.1", port=5000)
+    web_app.run()
 
 
 
