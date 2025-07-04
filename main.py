@@ -10,6 +10,8 @@ from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
 
 
+from app.main import app as web_app
+
 def checkRequiredSysBin():
     # Ici je vérifie si les binaires requis sont installés
     required_bins = ["nmap", "zaproxy"]
@@ -42,6 +44,10 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
         if stdoutPing:
             asyncio.run(ipAi(ip, name, domain))
 
+@app.command()
+def web():
+    typer.echo("Starting web application...")
+    web_app.run(debug=True, host="127.0.1", port=5000)
 
 
 
