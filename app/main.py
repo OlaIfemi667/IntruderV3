@@ -101,6 +101,21 @@ def delete_all_scans():
     except Exception as e:
         return f"Error deleting all scans: {e}"
 
+
+
+@app.route("/login")
+def login():
+    pass    
+
+@app.route("/logout")
+def logout():
+    pass
+
+@app.route("/register")
+def register():
+    pass
+
+
 if __name__ == "__main__":
     app()
 
