@@ -105,15 +105,15 @@ def delete_all_scans():
 
 @app.route("/login")
 def login():
-    pass    
+    return render_template("login.html")    
 
 @app.route("/logout")
 def logout():
-    pass
+    return render_template("index.html")
 
 @app.route("/register")
 def register():
-    pass
+    return render_template("register.html")
 
 
 if __name__ == "__main__":

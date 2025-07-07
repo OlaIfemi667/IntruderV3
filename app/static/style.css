@@ -342,6 +342,117 @@
 
 
 
+.login-form {
+    background: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 4rem auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.8s ease;
+}
+
+.login-form h2 {
+    text-align: center;
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--secondary-text);
+}
+
+.input-group input {
+    padding: 0.75rem 1rem;
+    background: var(--accent-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--primary-text);
+    font-size: 1rem;
+    transition: border 0.2s ease, background 0.2s ease;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    background: #1f1f1f;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 0.75rem;
+    background: var(--accent-color);
+    color: var(--primary-bg);
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.login-form button:hover {
+    background: #00cc6a;
+}
+
+.error {
+    color: #ff3366;
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+
+.cta-login {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;          /* Ajuste si tu veux plus grand/petit */
+    color: var(--secondary-text);
+    animation: fadeIn 0.8s ease;
+}
+
+.cta-login .cta-link {
+    color: var(--accent-color);
+    font-weight: 600;
+    text-decoration: none;    /* retire le soulignement par défaut   */
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+/* Petit soulignement animé au survol */
+.cta-login .cta-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+}
+
+.cta-login .cta-link:hover {
+    color: #00cc6a; /* léger changement de teinte */
+}
+
+.cta-login .cta-link:hover::after {
+    transform: scaleX(1);
+}
+
+
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
