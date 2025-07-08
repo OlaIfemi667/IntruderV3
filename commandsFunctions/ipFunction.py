@@ -5,7 +5,7 @@ from subprocessUtils.subprocess import *
 from database.database import *
 from zap.zap import *
 
-async def ipAi(ip, scanName, domain, id=None):
+async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
     
     # faire un whois
     #stdoutWhois, stderrWhois = await doWhois(ip)
@@ -31,7 +31,7 @@ async def ipAi(ip, scanName, domain, id=None):
 
     # ajouter les result
     addScan(scanName, ip, domain, id=id)
-    zapOutput = zap(ip, "http")
+    zapOutput = zap(ip, "http", zapApiKey)  # Change to match the API key set in ZAP, or use None if the API key is disabled
 
     #addProcesses(scanName, "whois", str(parsedWhois))
     addProcesses(scanName, "nmap", stdoutNmap)

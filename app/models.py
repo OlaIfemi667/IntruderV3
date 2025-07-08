@@ -10,7 +10,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     scans = db.relationship('Scan')
-
+    groqApi = db.Column(db.String(150), nullable=True)
+    zapApi = db.Column(db.String(150), nullable=True)
     def __repr__(self):
         return f'<User {self.username}>'
 

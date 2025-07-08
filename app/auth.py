@@ -37,6 +37,8 @@ def register():
         password = request.form.get('password')
         email = request.form.get('email')
         confirm_password = request.form.get('confirm_password')
+        groqApi = request.form.get('groqApi')
+        zapApi = request.form.get('zapApi')
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -52,7 +54,7 @@ def register():
             flash("Passwords do not match.", category='error')
             return redirect(url_for('auth.register')) 
         else:
-            new_user = User(username=username, password=generate_password_hash(password, method='pbkdf2:sha256'), email=email)
+            new_user = User(username=username, password=generate_password_hash(password, method='pbkdf2:sha256'), email=email, groqApi=groqApi, zapApi=zapApi)
 
             db.session.add(new_user)
             db.session.commit()

@@ -11,7 +11,9 @@ def init_db(db_path='database.db'):
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username TEXT NOT NULL UNIQUE,
                     password TEXT NOT NULL,
-                    email TEXT NOT NULL UNIQUE
+                    email TEXT NOT NULL UNIQUE,
+                    groqApi TEXT,
+                    zapApi TEXT
                 );
                 ''')
             cursor.execute('''
@@ -107,11 +109,11 @@ def getScans(db_path='database.db', userId=None):
     return ["default"]
 
 
-def getScansDetails(db_path='database.db', scanName="default"):
+def getScansDetails(db_path='database.db', scanName="default", id=None):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * from PROCESSES where nameScan = ?", (scanName,))
+            cursor.execute("SELECT * from PROCESSES where nameScan = ?  ", (scanName,))
             rows = cursor.fetchall()
             print(len(rows))
             return rows

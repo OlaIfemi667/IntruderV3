@@ -83,6 +83,14 @@
                     <label for="confirm-password">Confirm Password</label>
                     <input type="password" id="confirm-password" name="confirm_password" required>
                 </div>
+                <div class="input-group">
+                    <label for="groqApi">Groq API Key</label>
+                    <input type="text" id="groqApi" name="groqApi" placeholder="Optional: GroqAPiKey But LLM won't work without it">
+                </div>
+                <div class="input-group">
+                    <label for="zapApi">ZAP API Key</label>
+                    <input type="text" id="zapApi" name="zapApi" placeholder="ZAP API Key" required>
+                </div>
                 <button type="submit">Register</button>
             </form>
             {% if error %}

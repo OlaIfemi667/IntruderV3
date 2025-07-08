@@ -33,6 +33,7 @@ def scans():
 @views.route("/home/newscan", methods=['POST', 'GET'])
 @login_required
 def newScan():
+    print(current_user.zapApi)
     if request.method == "POST":
         
         target = request.form.get("target")
@@ -52,7 +53,7 @@ def newScan():
 
         flash(f"Scan {scanName} created successfully.", category='success')
         
-        return redirect(url_for('views.scanDetail', scanName=scanName)), asyncio.run(ipAi(target, scanName, "", current_user.id))
+        return redirect(url_for('views.scanDetail', scanName=scanName)), asyncio.run(ipAi(target, scanName, "", current_user.id, current_user.zapApi))
     return render_template("newscan.html", user=current_user)
 
 @views.route("/home/scans/<scanName>", methods=['POST', 'GET'])

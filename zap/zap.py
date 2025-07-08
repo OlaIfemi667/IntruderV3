@@ -7,47 +7,31 @@ from zapv2 import ZAPv2
 
 
 
-def zap(ip, webProtocol):
-
-    #ip c'est l'address
-    #webProtocol est le type de protocol web http ou https
-
-
-
+def zap(ip, webProtocol, apiParam=None):
     target = f"{webProtocol}://{ip}"
-    apikey = 'sgkqr2p1kut20hk742033njnqb' # Change to match the API key set in ZAP, or use None if the API key is disabled
-    #
-    # By default ZAP API client will connect to port 8080
+    apikey = apiParam
     zap = ZAPv2(apikey=apikey)
-    # Use the line below if ZAP is not listening on port 8080, for example, if listening on port 8090
-    # zap = ZAPv2(apikey=apikey, proxies={'http': 'http://127.0.0.1:8090', 'https': 'http://127.0.0.1:8090'})
 
-    # Proxy a request to the target so that ZAP has something to deal with
-    print('Accessing target {}'.format(target))
+    print(f"[+] Accessing target: {target}")
     zap.urlopen(target)
-    # Give the sites tree a chance to get updated
     time.sleep(2)
 
-
-
-    print ('Active Scanning target {}'.format(target))
-    scanid = zap.ascan.scan(target, recurse=False)
+    print("[+] Disabling all scanners...")
     zap.ascan.disable_all_scanners()
-    zap.ascan.enable_scanners("40012,40014,40018")  # XSS, SQLi par exemple
 
-    while (int(zap.ascan.status(scanid)) < 100):
-        # Loop until the scanner has finished
-        print ('Scan progress %: {}'.format(zap.ascan.status(scanid)))
+    print("[+] Enabling selected scanners: XSS (40012), SQLi (40014), etc.")
+    zap.ascan.enable_scanners("40012,40014,40018")
+
+    print(f"[+] Starting active scan on: {target}")
+    scanid = zap.ascan.scan(target, recurse=False)
+
+    while int(zap.ascan.status(scanid)) < 100:
+        print(f"    [+] Scan progress: {zap.ascan.status(scanid)}%")
         time.sleep(5)
 
-    print ('Active Scan completed')
+    print("[+] Scan completed")
+    print("[+] Hosts found:", ", ".join(zap.core.hosts))
+    print("[+] Alerts:")
+    pprint(zap.core.alerts())  # affichage seulement
 
-    # Report the results
-
-    print ('Hosts: {}'.format(', '.join(zap.core.hosts)))
-    print ('Alerts: ')
-    pprint (zap.core.alerts())
-
-    return zap.core.alerts()
-
-
+    return zap.core.alerts() 
