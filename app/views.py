@@ -126,3 +126,9 @@ def delete_all_scans():
         return render_template("scans.html", content=getScans(DB_PATH), user=current_user)
     except Exception as e:
         return f"Error deleting all scans: {e}"
+
+
+@views.route("/home/scanSchema")
+@login_required
+def scanSchema():
+    return render_template("scanschema.html", user=current_user)

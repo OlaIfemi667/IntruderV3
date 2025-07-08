@@ -450,6 +450,83 @@
 .cta-login .cta-link:hover::after {
     transform: scaleX(1);
 }
+/* style scanschema*/
+.tools-and-slots {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.tool-list, .slot-zone {
+    flex: 1;
+    min-width: 280px;
+}
+
+.tool-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.tool {
+    background: var(--accent-bg);
+    border: 1px dashed var(--border-color);
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: grab;
+    transition: background 0.2s ease;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.tool:hover {
+    background: var(--hover-bg);
+}
+
+.slots {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.slot {
+    width: 120px;
+    height: 60px;
+    background: var(--accent-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--secondary-text);
+    font-size: 0.95rem;
+    transition: background 0.2s ease;
+}
+
+.slot.filled {
+    background: #111;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+.cta-button {
+    background: var(--accent-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-bg);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.cta-button:hover {
+    background: #00cc6a;
+}
 
 
 
