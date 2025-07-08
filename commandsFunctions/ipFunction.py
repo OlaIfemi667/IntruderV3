@@ -5,7 +5,7 @@ from subprocessUtils.subprocess import *
 from database.database import *
 from zap.zap import *
 
-async def ipAi(ip, scanName, domain):
+async def ipAi(ip, scanName, domain, id=None):
     
     # faire un whois
     #stdoutWhois, stderrWhois = await doWhois(ip)
@@ -30,7 +30,7 @@ async def ipAi(ip, scanName, domain):
     # il faut que je code le systeme pour recherche les protocoles tcp web trouvé http, https
 
     # ajouter les result
-    addScan(scanName, ip, domain)
+    addScan(scanName, ip, domain, id=id)
     zapOutput = zap(ip, "http")
 
     #addProcesses(scanName, "whois", str(parsedWhois))

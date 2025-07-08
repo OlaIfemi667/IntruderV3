@@ -5,3 +5,5 @@ openai
 weasyprint
 groq
 python-dotenv
+flask-sqlalchemy
+flask-login

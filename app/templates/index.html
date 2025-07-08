@@ -16,9 +16,15 @@
                 Intruder
             </div>
             <ul class="nav-links">
+                {% if user.is_authenticated %}
                 <li><a href="/home" class="active">Home</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
+                <li><a href="/logout" class="cta-link">Logout</a></li>
+                {% else %}
+                <li><a href="/login" class="cta-link">Login</a></li>
+                <li><a href="/register" class="cta-link">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>
@@ -29,12 +35,17 @@
             <p class="page-subtitle">
                 Intruder is an automated penetration testing assistant that combines classical tools like Nmap, Whois, ZAP, and Exploit-DB with AI-powered analysis.
             </p>
-            <div class="cta-login">
-                <p>Get started&nbsp;<a href="/login" class="cta-link">Login Page</a></p>
-            </div>
+            
         </div>
 
         <div class="actions-grid" style="max-width: 800px; margin: 0 auto;">
+            <a href="/home/newscan" class="action-card">
+                <i class="fas fa-plus action-icon"></i>
+                <h3 class="action-title">New Scan</h3>
+                <p class="action-description">Start a new security scan against your target</p>
+
+            </a>
+            
             <a href="/home/scans" class="action-card">
                 <i class="fas fa-bolt action-icon"></i>
                 <h3 class="action-title">See all scans</h3>

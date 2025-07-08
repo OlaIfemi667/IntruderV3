@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Scan – Intruder</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="logo">
+        <i class="fa-solid fa-shield-halved" style="color: #00ff88;"></i>
+        Intruder
+      </div>
+      <ul class="nav-links">
+        {% if user.is_authenticated %}
+        <li><a href="/home" class="active">Home</a></li>
+        <li><a href="/home/scans">Scans</a></li>
+        <li><a href="/home/docs">Documentation</a></li>
+        <li><a href="/logout" class="cta-link">Logout</a></li>
+        {% else %}
+        <li><a href="/login" class="cta-link">Login</a></li>
+        <li><a href="/register" class="cta-link">Register</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="login-form">
+        <h2>Start New Scan</h2>
+        <form action="/home/newscan" method="post">
+            <div class="input-group">
+                <label for="scanName">Scan Name</label>
+                <input type="text" id="scanName" name="scanName" placeholder="e.g., My Scan" required>
+                <label for="target">Target IP Address</label>
+                <input type="text" id="target" name="target" placeholder="e.g., 192.168.1.1" required>
+            </div>
+            <button type="submit">Scan</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if message %}
+            <p class="cta-login">{{ message }}</p>
+        {% endif %}
+    </div>
+  </div>
+
+  <div class="footer">
+    <p class="footer-text">Intruder – Automated Penetration Testing Tool</p>
+  </div>
+</body>
+</html>

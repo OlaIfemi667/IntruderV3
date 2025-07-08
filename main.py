@@ -12,16 +12,20 @@ from database.database import * #for db SQLite operations
 
 from app.main import app as web_app
 
+
 def checkRequiredSysBin():
-    # Ici je vérifie si les binaires requis sont installés
     required_bins = ["nmap", "zaproxy"]
+    all_present = True
+
     for bin_name in required_bins:
         if not shutil.which(bin_name):
             typer.echo(f"Error: {bin_name} is not installed or not found in PATH.")
-            return False
+            all_present = False
         else:
-            typer.echo(f"{bin_name} is installed.")
-            return True
+            typer.echo(f"[+] {bin_name} is installed.")
+
+    return all_present
+
 
 init_db() # this line is so obvious
 app = typer.Typer()
@@ -48,7 +52,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 def web():
     # Pour lancer l'application web
     typer.echo("Starting web application...")
-    web_app.run()
+    web_app.run(debug=True)
 
 
 

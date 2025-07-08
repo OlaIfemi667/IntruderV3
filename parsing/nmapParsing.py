@@ -4,8 +4,20 @@ import re
 
 from typing import List, Tuple, Any
 import ast
+import re
+
+# Make a regular expression
+# for validating an Ip-address
+regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
 
 
+def isIP(Ip): 
+    #on stackoverflow
+    if(re.search(regex, Ip)): 
+        return True
+        
+    else: 
+        return False
 def is_edb_format(value):
     pattern = r"^EDB-ID:\d+$"
     return bool(re.match(pattern, value))
@@ -68,8 +80,8 @@ def nmapParsing(fichierXml):
                             print(f"> EDB-ID trouvé : {edb_id} sur le port {portID}")
                             port_info['edb_ids'].append(edb_id)
 
-            if len(port_info['edb_ids']) != 0:
-                host_info['ports'].append(port_info)
+            """if len(port_info['edb_ids']) != 0:"""
+            host_info['ports'].append(port_info)
 
 
            

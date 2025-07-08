@@ -7,11 +7,22 @@ def init_db(db_path='database.db'):
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute('''
+                CREATE TABLE IF NOT EXISTS USER (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    username TEXT NOT NULL UNIQUE,
+                    password TEXT NOT NULL,
+                    email TEXT NOT NULL UNIQUE
+                );
+                ''')
+            cursor.execute('''
                 CREATE TABLE IF NOT EXISTS SCANS (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     scanName TEXT NOT NULL UNIQUE,
                     ipaddress TEXT NOT NULL,
-                    domain TEXT NOT NULL
+                    domain TEXT NOT NULL,
+                    userId INTEGER,
+                    date TEXT DEFAULT (datetime('now', 'localtime')),
+                    FOREIGN KEY(userId) REFERENCES USER(id)
                 );
             ''')
             cursor.execute('''
@@ -29,13 +40,13 @@ def init_db(db_path='database.db'):
         print(f"[!] Database error during initialization: {e}")
 
 
-def addScan(name, ip, domain, db_path='database.db'):
+def addScan(name, ip, domain, db_path='database.db', id=None):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO SCANS (scanName, ipaddress, domain) VALUES (?, ?, ?)",
-                (name, ip, domain)
+                "INSERT INTO SCANS (scanName, ipaddress, domain, userId) VALUES (?, ?, ?, ?)",
+                (name, ip, domain, id)
             )
             conn.commit()
             print("[+] Scan ajouté avec succès.")
@@ -81,11 +92,11 @@ def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
 
 
 
-def getScans(db_path='database.db'):
+def getScans(db_path='database.db', userId=None):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT scanName FROM SCANS")
+            cursor.execute("SELECT scanName FROM SCANS where userId = ?", (userId,))
             rows = cursor.fetchall()
             print(f"{rows}AAAAAAAAAAAAAAAAAAAAAAAA")
             return [row[0] for row in rows]  
