@@ -128,7 +128,13 @@ def delete_all_scans():
         return f"Error deleting all scans: {e}"
 
 
-@views.route("/home/scanSchema")
+@views.route("/home/scanSchema", methods=["POST", "GET"])
 @login_required
 def scanSchema():
+    if request.method == "POST":
+        scanName = request.form.get("scan_name")
+        target_ip = request.form.get("target_ip")
+        selected_tools = request.form.get("selected_tools", "").split(",")  # on récup les outils sélectionnés dans un tableau
+
+        print(f"Scan Name: {scanName}, Target IP: {target_ip}, Selected Tools: {selected_tools}")
     return render_template("scanschema.html", user=current_user)

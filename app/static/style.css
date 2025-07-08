@@ -451,6 +451,8 @@
     transform: scaleX(1);
 }
 /* style scanschema*/
+
+
 .tools-and-slots {
     display: flex;
     justify-content: space-around;

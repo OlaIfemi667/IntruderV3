@@ -35,7 +35,7 @@
             <p class="page-subtitle">Drag tools into the slots to customize your scan strategy (max 4).</p>
         </div>
 
-        <form id="footprint-form" method="POST" action="/footprint/run">
+        <form id="footprint-form" method="POST" >
             <div class="input-group" style="max-width: 400px; margin: 0 auto 2rem;">
                 <label for="scan-name">Scan Name</label>
                 <input type="text" id="scan-name" name="scan_name" placeholder="e.g. My Footprint Scan" required>
@@ -68,7 +68,7 @@
                 </div>
             </div>
 
-            <input type="hidden" name="selected_tools" id="selected-tools">
+            <input type="hidden" name="selected_tools" id="selected-tools"> <!-- grace a ce  champ caché je peux récuperer du coté serveur les outils sélectionnés -->
             <div style="text-align: center; margin-top: 2rem;">
                 <button type="submit" class="cta-button">Run Plan</button>
             </div>
@@ -111,15 +111,24 @@
                     slot.style.backgroundColor = '';
                 });
 
-                slot.addEventListener('drop', e => {
+                slot.addEventListener('drop', function(e) {
                     e.preventDefault();
-                    const toolName = e.dataTransfer.getData('text/plain');
+                    const tool = e.dataTransfer.getData('text/plain');
+
+                    // Empêche les doublons
+                    const alreadyUsed = Array.from(slots).some(s => s.textContent.trim() === tool);
+                    if (alreadyUsed) {
+                        alert(`"${tool}" is already used in a slot.`);
+                        return;
+                    }
+
                     if (slot.textContent.trim() === '') {
-                        slot.textContent = toolName;
+                        slot.textContent = tool;
                         slot.classList.add('filled');
                         updateSelected();
                     }
                 });
+
 
                 slot.addEventListener('click', () => {
                     slot.textContent = '';
