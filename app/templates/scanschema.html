@@ -17,7 +17,7 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" class="active">Home</a></li>
+                <li><a href="/home" >Home</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
                 <li><a href="/logout" class="cta-link">Logout</a></li>
@@ -49,11 +49,10 @@
                 <div class="tool-list">
                     <h3>Available Tools</h3>
                     <div id="tools" class="tool-items">
-                        <div class="tool" draggable="true" data-tool="nmap">Nmap</div>
-                        <div class="tool" draggable="true" data-tool="whois">Whois</div>
-                        <div class="tool" draggable="true" data-tool="dig">Dig</div>
-                        <div class="tool" draggable="true" data-tool="nslookup">Nslookup</div>
-                        <div class="tool" draggable="true" data-tool="theHarvester">theHarvester</div>
+                        {% for tool in builtinTools %}
+                        <!-- Ajouter dynamiquement les outils de la base de données -->
+                        <div class="tool" draggable="true" data-tool="{{ tool }}">{{ tool }}</div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -149,5 +148,12 @@
         });
 
     </script>
+    <script>
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.href === window.location.href) {
+                    link.classList.add('active');
+                }
+            });
+        </script>
 </body>
 </html>

@@ -17,7 +17,8 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+    <script  src="{{ url_for('static', filename='main.js') }}"  defer></script>
+
 </head>
 <body>
     <header>
@@ -28,7 +29,7 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" class="active">Home</a></li>
+                <li><a href="/home" >Home</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
                 <li><a href="/logout" class="cta-link">Logout</a></li>
@@ -105,5 +106,12 @@
     <div class="footer">
         <p class="footer-text">Intruder - Automated Penetration Testing Tool</p>
     </div>
+    <script>
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            }
+        });
+    </script>
 </body>
 </html>

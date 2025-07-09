@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for 
-from .models import User
+from .models import User, Util
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db
@@ -131,10 +131,13 @@ def delete_all_scans():
 @views.route("/home/scanSchema", methods=["POST", "GET"])
 @login_required
 def scanSchema():
+    Utils = Util.query.filter_by(Utiltype='default').all() # Récupérer les outils par défaut dans la db
+    nameUtils = [util.name for util in Utils]  # comprehension de liste pour les noms des outils
+    print(nameUtils)
     if request.method == "POST":
         scanName = request.form.get("scan_name")
         target_ip = request.form.get("target_ip")
-        selected_tools = request.form.get("selected_tools", "").split(",")  # on récup les outils sélectionnés dans un tableau
+        selected_tools = request.form.get("selected_tools")  # on récup les outils sélectionnés dans un tableau au format  a,b,c,d
 
         print(f"Scan Name: {scanName}, Target IP: {target_ip}, Selected Tools: {selected_tools}")
-    return render_template("scanschema.html", user=current_user)
+    return render_template("scanschema.html", user=current_user, builtinTools=nameUtils)

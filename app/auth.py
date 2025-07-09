@@ -15,6 +15,7 @@ def login():
         password = request.form.get('password')
 
         user = User.query.filter_by(username=username).first()
+        print(user)
 
         if user and check_password_hash(user.password, password):
             flash("Login successful!", category='success')

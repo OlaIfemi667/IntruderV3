@@ -16,4 +16,3 @@ window.onclick = function(event) {
   }
 }
 
-
