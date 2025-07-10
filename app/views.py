@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for 
 from .models import User, Util
-from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
+
 
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -52,8 +53,8 @@ def newScan():
             return redirect(url_for('views.newScan'))
 
         flash(f"Scan {scanName} created successfully.", category='success')
-        
-        return redirect(url_for('views.scanDetail', scanName=scanName)), asyncio.run(ipAi(target, scanName, "", current_user.id, current_user.zapApi))
+        asyncio.run(ipAi(target, scanName, "", current_user.id, current_user.zapApi))
+        return redirect(url_for('views.scanDetail', scanName=scanName))
     return render_template("newscan.html", user=current_user)
 
 @views.route("/home/scans/<scanName>", methods=['POST', 'GET'])
@@ -77,11 +78,12 @@ def reporting(scanName):
 @views.route("/home/scans/<scanName>/export")
 @login_required
 def export_report(scanName):
+    ##on converti en pdf grace a l'objet HTML de weasyprint
     scanDetail = getScansDetails(DB_PATH, scanName)
     scanDetail = convertTuples(scanDetail)
     
 
-    html_content = render_template("scanBase.html", scan=scanName, scansContent=scanDetail)
+    html_content = render_template("report.html", scan=scanName, scansContent=scanDetail, timestamp=datetime.now().strftime("%Y-%m-%d %H:%M"))
     pdf_file = HTML(string=html_content).write_pdf()
     return io.BytesIO(pdf_file), 200, {
         'Content-Type': 'application/pdf',
@@ -108,7 +110,7 @@ def delete_scan(scanName):
         cursor.execute("DELETE FROM SCANS WHERE scanName = ?", (scanName,))
         conn.commit()
         conn.close()
-        return render_template("scans.html", content=getScans(DB_PATH), user=current_user)
+        return redirect(url_for('views.scans'))
     except Exception as e:
         return f"Error deleting scan: {e}"
 
@@ -123,7 +125,7 @@ def delete_all_scans():
         cursor.execute("DELETE FROM SCANS")
         conn.commit()
         conn.close()
-        return render_template("scans.html", content=getScans(DB_PATH), user=current_user)
+        return redirect(url_for('views.scans'))
     except Exception as e:
         return f"Error deleting all scans: {e}"
 

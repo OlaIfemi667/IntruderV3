@@ -75,9 +75,6 @@ def insertBuiltinTools(db_path='database.db'):
         ("Nikto", "Scanner de vulnérabilités web", "default"),
         ("Gobuster", "Outil de brute force pour découvrir des ressources web", "default"),
         ("Dirb", "Outil de brute force pour découvrir des répertoires web", "default"),
-        ("SQLMap", "Outil d'injection SQL automatisé", "default"),
-        ("Metasploit", "Framework d'exploitation de vulnérabilités", "default"),
-        ("Burp Suite", "Outil de test de sécurité des applications web", "default")
     ]
 
     try:

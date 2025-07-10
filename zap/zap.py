@@ -30,8 +30,12 @@ def zap(ip, webProtocol, apiParam=None):
         time.sleep(5)
 
     print("[+] Scan completed")
-    print("[+] Hosts found:", ", ".join(zap.core.hosts))
+    #print("[+] Hosts found:", ", ".join(zap.core.hosts))
     print("[+] Alerts:")
     pprint(zap.core.alerts())  # affichage seulement
 
     return zap.core.alerts() 
+
+
+if __name__ == "__main__":
+    print(zap("127.0.0.1", "http", "a3vb0hvphqbu7ruhvpql9l5ufm"))

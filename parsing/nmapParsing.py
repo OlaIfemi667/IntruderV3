@@ -8,7 +8,8 @@ import re
 
 # Make a regular expression
 # for validating an Ip-address
-regex = "^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
+regex = r"^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}" \
+        r"(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"
 
 
 def isIP(Ip): 
@@ -18,6 +19,8 @@ def isIP(Ip):
         
     else: 
         return False
+    
+
 def is_edb_format(value):
     pattern = r"^EDB-ID:\d+$"
     return bool(re.match(pattern, value))
