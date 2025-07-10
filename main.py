@@ -8,6 +8,7 @@ from parsing.whoisParsing import * #to parse whois output
 from parsing.nmapParsing import * #to parse nmap
 from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
+from asciart.asciiart import *
 
 
 from app.main import app as web_app
@@ -27,11 +28,11 @@ def checkRequiredSysBin():
     return all_present
 
 
-init_db() # this line is so obvious
+init_db() # this line is so obvious :)
 app = typer.Typer()
 
 
-
+# pour exécuter un scan , may delete i soon
 @app.command()
 def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[str, typer.Argument(help="IP address to scan")], domain: Annotated[str, typer.Option(help="domain to scan")] = "None"):
     print(f"Scan name: {name}")
@@ -53,6 +54,15 @@ def web():
     # Pour lancer l'application web
     typer.echo("Starting web application...")
     web_app.run(debug=True)
+
+
+
+@app.command()
+def manage():
+    # la commde pour gerer l'outil
+    print(INTRUDER_MANAGER)
+    
+
 
 
 

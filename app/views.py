@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for 
 from .models import User, Util
 from datetime import datetime
+import threading
 
 
 from . import db
@@ -53,7 +54,19 @@ def newScan():
             return redirect(url_for('views.newScan'))
 
         flash(f"Scan {scanName} created successfully.", category='success')
-        asyncio.run(ipAi(target, scanName, "", current_user.id, current_user.zapApi))
+
+
+        # Capture les valeurs AVANT de quitter le contexte Flask
+        # parce que si j'avais utilisé current_user.zapApi directement dans la fonction ipAi,
+        # il aurait été vide car le contexte Flask n'est plus actif.
+        user_id = current_user.id
+        zap_api = current_user.zapApi
+
+        # Lancer le scan en tâche de fond
+        threading.Thread(
+            target=lambda: asyncio.run(ipAi(target, scanName, "", user_id, zap_api))
+        ).start()
+
         return redirect(url_for('views.scanDetail', scanName=scanName))
     return render_template("newscan.html", user=current_user)
 
