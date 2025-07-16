@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request
 from database.database import init_db
 import os
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_login import LoginManager
 
 
 
@@ -17,6 +17,12 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = "secretkey123"  
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_PATH}"
+
+    #pour les cookies
+    
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_COOKIE_HTTPONLY'] = True
+    #app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)
     init_db()
 
     db.init_app(app)

@@ -157,6 +157,47 @@ def getScans(db_path='database.db', userId=None):
         print(f"[!] Unexpected error: {e}")
     return ["default"]
 
+def getUsers(db_path='database.db'):
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, username FROM USER")
+            rows = cursor.fetchall()
+            return [{"id": row[0], "username": row[1]} for row in rows]
+    except sqlite3.Error as e:
+        print(f"[!] Database error: {e}")
+    except Exception as e:
+        print(f"[!] Unexpected error: {e}")
+    return ["default"]
+
+
+def getanUsername( userId=None):
+    db_path='database.db'
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT username FROM USER WHERE id = ?", (userId,))
+            row = cursor.fetchone()
+            if row:
+                return row[0]
+            else:
+                print(f"[!] No user found with ID {userId}")
+                return None
+    except sqlite3.Error as e:
+        print(f"[!] Database error: {e}")
+    except Exception as e:
+        print(f"[!] Unexpected error: {e}")
+    return None
+
+def getAllScans(db_path='database.db'):
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT scanName, userID FROM SCANS")
+            rows = cursor.fetchall()
+            return [{"scanName": row[0], "userId": row[1]} for row in rows]
+    except sqlite3.Error as e:
+        print(f"[!] Database error: {e}")
 
 def getScansDetails(db_path='database.db', scanName="default", id=None):
     try:

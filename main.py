@@ -9,6 +9,7 @@ from parsing.nmapParsing import * #to parse nmap
 from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
 from asciart.asciiart import *
+from manage.manage import manager
 
 
 from app.main import app as web_app
@@ -61,6 +62,8 @@ def web():
 def manage():
     # la commde pour gerer l'outil
     print(INTRUDER_MANAGER)
+    manager()
+
     
 
 

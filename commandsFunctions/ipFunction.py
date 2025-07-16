@@ -16,8 +16,12 @@ async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
 
     # faire un scan de ports
     stdoutNmap, stderrNmap = await doNmap(ip)
-    print(f"[+] Scan nmap de {ip} terminé")
-    
+    if stderrNmap:
+        print(f"[!] Erreur lors du scan Nmap: {stderrNmap}")
+        return
+    print(f"[+] Scan nmap  {ip} completed")
+    print("[+] Adding scan nmap to database")
+    addProcesses(scanName, "nmap", stdoutNmap)
     
 
     #faire le scan de vuln avec nuclei
@@ -32,9 +36,9 @@ async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
     # ajouter les result
     addScan(scanName, ip, domain, id=id)
     zapOutput = zap(ip, "http", zapApiKey)  # Change to match the API key set in ZAP, or use None if the API key is disabled
-
+    
     #addProcesses(scanName, "whois", str(parsedWhois))
-    addProcesses(scanName, "nmap", stdoutNmap)
+    
     addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
 
 
