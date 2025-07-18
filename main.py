@@ -64,9 +64,6 @@ def manage():
     print(INTRUDER_MANAGER)
     manager()
 
-    
-
-
 
 
 if __name__ ==  "__main__":

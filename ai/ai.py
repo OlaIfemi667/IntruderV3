@@ -3,23 +3,18 @@ from dotenv import load_dotenv
 
 from groq import Groq
 
-def getResponseFromAI(question, scanDetail):
-
-    """
-    Function to get a response from OpenAI's API based on the question and scan details.
-    """
-
-
-    load_dotenv() #Pour charger les variables d'environnement depuis le fichier .env
-    client = Groq(
-    api_key=os.environ.get("GROQ_API_KEY"),
-)
-    print("Using Groq API Key:", os.environ.get("GROQ_API_KEY"))
+def getResponseFromAI(question, scanDetail, apikey=None):
+    
     if not question or not scanDetail:
         return "Error: Question and scan details must be provided."
-    if not os.environ.get("GROQ_API_KEY"):
-        return "Error: GROQ_API_KEY environment variable is not set."
-    # Prepare the prompt for the AI
+    
+    apiKey = apikey
+
+    if not apiKey:
+        return "No API key provided, using environment variable"
+
+    client = Groq(api_key=apiKey)
+    
     prompt = f"Question: {question}\nScan Details: {scanDetail}\nAnswer:"
     
     try:

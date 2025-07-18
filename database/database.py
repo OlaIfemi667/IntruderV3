@@ -67,8 +67,6 @@ def init_db(db_path='database.db'):
         print(f"[!] Database error during initialization: {e}")
 
 
-
-
 def insertBuiltinTools(db_path='database.db'):
     tools = [
         ("Nmap", "Outil de scan de réseau et de sécurité", "default"),
@@ -90,7 +88,6 @@ def insertBuiltinTools(db_path='database.db'):
         print(f"[!] Erreur lors de l'insertion des outils : {e}")
 
 
-
 def addScan(name, ip, domain, db_path='database.db', id=None):
     try:
         with sqlite3.connect(db_path) as conn:
@@ -110,6 +107,7 @@ def addScan(name, ip, domain, db_path='database.db', id=None):
     except Exception as e:
         print(f"[!] Erreur inattendue: {e}")
     return False
+
 
 def checkScanExists(name, db_path='database.db'):
     try:
@@ -142,7 +140,6 @@ def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
     return False
 
 
-
 def getScans(db_path='database.db', userId=None):
     try:
         with sqlite3.connect(db_path) as conn:
@@ -156,6 +153,7 @@ def getScans(db_path='database.db', userId=None):
     except Exception as e:
         print(f"[!] Unexpected error: {e}")
     return ["default"]
+
 
 def getUsers(db_path='database.db'):
     try:
@@ -189,15 +187,17 @@ def getanUsername( userId=None):
         print(f"[!] Unexpected error: {e}")
     return None
 
+
 def getAllScans(db_path='database.db'):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT scanName, userID FROM SCANS")
+            cursor.execute("SELECT scanName, userID, id FROM SCANS")
             rows = cursor.fetchall()
-            return [{"scanName": row[0], "userId": row[1]} for row in rows]
+            return [{"scanName": row[0], "userId": row[1], "id": row[2]} for row in rows]
     except sqlite3.Error as e:
         print(f"[!] Database error: {e}")
+
 
 def getScansDetails(db_path='database.db', scanName="default", id=None):
     try:
@@ -213,5 +213,6 @@ def getScansDetails(db_path='database.db', scanName="default", id=None):
     except Exception as e:
         print(f"[!] Unexpected error: {e}")
     return ["default"]
+
 
 

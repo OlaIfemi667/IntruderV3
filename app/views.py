@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for 
-from .models import User, Util
+from .models import Util
 from datetime import datetime
 import threading
 
 
 from . import db
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import login_required,  current_user
 from database.database import *
 from weasyprint import HTML
 import io
@@ -37,9 +37,8 @@ def scans():
 def newScan():
     print(current_user.zapApi)
     if request.method == "POST":
-        
         target = request.form.get("target")
-        scanName = request.form.get("scanName")  # Default scan name if not provided
+        scanName = request.form.get("scanName") 
         if not target:
             flash("Target IP address is required.", category='error')
             return redirect(url_for('views.newScan'))
@@ -62,7 +61,6 @@ def newScan():
         user_id = current_user.id
         zap_api = current_user.zapApi
 
-        # Lancer le scan en tâche de fond
         threading.Thread(
             target=lambda: asyncio.run(ipAi(target, scanName, "", user_id, zap_api))
         ).start()
@@ -75,13 +73,14 @@ def newScan():
 def scanDetail(scanName):
     scanDetail = getScansDetails(DB_PATH, scanName)
     scanDetail = convertTuples(scanDetail)
-
+    apiKey = current_user.groqApi if current_user.groqApi else None
     if request.method == 'POST':
         if "asking" in request.form:
             print("Form submitted")
             question = request.form.get("iaInput")
-            response = getResponseFromAI(question, scanDetail)
-            return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response, question=question)
+            print(apiKey)
+            response = getResponseFromAI(question, scanDetail, apiKey)
+            return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response, question=question, user=current_user)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail, user=current_user)
 
 """ @app.route("/home/scans/<scanName>/reporting")

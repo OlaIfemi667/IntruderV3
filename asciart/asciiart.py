@@ -6,11 +6,16 @@ INTRUDER_MANAGER = """
 ▀▀▀▀▀ █▪ ▀▀▀ .▀  ▀ ▀▀▀ ▀▀▀▀▀•  ▀▀▀ .▀  ▀    ▀▀  █▪▀▀▀ ▀  ▀ ▀▀ █▪ ▀  ▀ ·▀▀▀▀  ▀▀▀ .▀  ▀
 
 Welcome to IntruderV3 management console!
+
+"""
+
+INTRUDER_MANAGER_QUESTIONS = """
+------------------------------------------------------------------------------------------
 1- List all scans
 2- Export a scan report
 3- Set up ZAP API key
 4- Set up Groq API key
 5- Exit
-
+------------------------------------------------------------------------------------------
 
 """
