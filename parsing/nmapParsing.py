@@ -83,6 +83,14 @@ def nmapParsing(fichierXml):
                             print(f"> EDB-ID trouvé : {edb_id} sur le port {portID}")
                             port_info['edb_ids'].append(edb_id)
 
+
+            
+            uniqPort = []
+            for port in port_info['edb_ids']:
+                if port not in uniqPort:
+                    uniqPort.append(port)
+            port_info['edb_ids'] = uniqPort
+            
             """if len(port_info['edb_ids']) != 0:"""
             host_info['ports'].append(port_info)
 
