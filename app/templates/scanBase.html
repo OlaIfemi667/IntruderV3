@@ -97,7 +97,7 @@
                                             <details>
                                                 <summary><strong>{{ alert.name }}</strong> — Risque : {{ alert.risk }}</summary>
                                                 <p><strong>Description :</strong> {{ alert.description_fr if alert.description_fr else alert.description }}</p>
-                                                <p><strong>Solution :</strong> {{ alert.solution }}</p>
+                                                <p><strong>Solution :</strong> {{ alert.solution_fr if alert.solution_fr else alert.solution }}</p>
                                                 {% if alert.url %}
                                                     <p><strong>URL :</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
                                                 {% endif %}

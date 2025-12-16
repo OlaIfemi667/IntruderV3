@@ -24,7 +24,6 @@ app = create_app()
 
 # initialisation de la base de données
 init_db() # ceci est ma fonction pour créer les tables si elle n'existe pas
-insertBuiltinTools() # insérer les outils par défaut dans la base de données
 
 
 

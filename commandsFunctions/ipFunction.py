@@ -5,7 +5,7 @@ from parsing.nucleiParsing import *
 from subprocessUtils.subprocess import *
 from database.database import *
 from zap.zap import *
-from traductionAndNotification.traduction import translate_en_fr
+from traductionAndNotification.traduction import    TelechargerPackage, traduireTexte
 
 
 async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
@@ -23,7 +23,7 @@ async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
 
         print(f"[+] Scan Nmap pour {ip} terminé")
         print("[+] Ajout des résultats Nmap dans la base")
-        addProcesses(scanName, "nmap", stdoutNmap)
+        addProcesses(scanName, "nmap", stdoutNmap, userId=id)
 
 
 
@@ -44,14 +44,16 @@ async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
                 for alert in zapOutput:
                     if isinstance(alert, dict) and 'description' in alert:
                         try:
-                            alert['description_fr'] = translate_en_fr(alert['description'])
+                            TelechargerPackage("en", "fr")
+                            alert['description_fr'] = traduireTexte(alert['description'])
+                            alert['solution_fr'] = traduireTexte(alert['solution'])
                             print(f"[+] Description traduite pour l'alerte: {alert.get('name', 'Unknown')}")
                         except Exception as e:
                             print(f"[!] Erreur lors de la traduction de la description: {e}")
                             # En cas d'erreur, on garde la description originale
                             alert['description_fr'] = alert.get('description', '')
             
-            addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
+            addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4), userId=id)
             print(f"[+] Scan ZAP sur {ip} terminé et enregistré")
         except Exception as e:
             print(f"[!] Erreur lors du scan ZAP pour {ip}: {e}")
