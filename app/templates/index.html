@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Intruder</title>
+    <title>Bienvenue sur Intruder</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script  src="{{ url_for('static', filename='main.js') }}"  defer></script>
@@ -18,13 +18,13 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" >Home</a></li>
+                <li><a href="/home" >Accueil</a></li>
                 <li><a href="/home/scans" >Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
-                <li><a href="/logout" class="cta-link">Logout</a></li>
+                <li><a href="/logout" class="cta-link">Déconnexion</a></li>
                 {% else %}
-                <li><a href="/login" class="cta-link">Login</a></li>
-                <li><a href="/register" class="cta-link">Register</a></li>
+                <li><a href="/login" class="cta-link">Connexion</a></li>
+                <li><a href="/register" class="cta-link">Inscription</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -32,9 +32,9 @@
 
     <div class="container">
         <div class="page-header" style="text-align: center;">
-            <h1 class="page-title">Welcome to Intruder</h1>
+            <h1 class="page-title">Bienvenue sur Intruder</h1>
             <p class="page-subtitle">
-                Intruder is an automated penetration testing assistant that combines classical tools like Nmap, Whois, ZAP, and Exploit-DB with AI-powered analysis.
+                Intruder est un assistant de tests d'intrusion automatisés qui combine des outils classiques comme Nmap, Whois, ZAP et Exploit‑DB avec une analyse pilotée par l'IA.
             </p>
             
         </div>
@@ -51,27 +51,27 @@
             
             <a href="/home/newscan" class="action-card">
                 <i class="fas fa-plus action-icon"></i>
-                <h3 class="action-title">New Scan</h3>
-                <p class="action-description">Start a new security scan against your target</p>
+                <h3 class="action-title">Nouveau scan</h3>
+                <p class="action-description">Lance un nouveau scan de sécurité contre ta cible</p>
 
             </a>
             
             <a href="/home/scans" class="action-card">
                 <i class="fas fa-bolt action-icon"></i>
-                <h3 class="action-title">See all scans</h3>
-                <p class="action-description">View security scans against your targets</p>
+                <h3 class="action-title">Voir tous les scans</h3>
+                <p class="action-description">Consulte tous les scans de sécurité effectués sur tes cibles</p>
             </a>
 
             <a href="/home/docs" class="action-card">
                 <i class="fas fa-book-open action-icon"></i>
                 <h3 class="action-title">Documentation</h3>
-                <p class="action-description">Learn how Intruder works and how to get the best out of it</p>
+                <p class="action-description">Découvre comment fonctionne Intruder et comment en tirer le meilleur</p>
             </a>
 
             <button id="aiInfoBtn" class="action-card" type="button" style="cursor: pointer;">
                 <i class="fas fa-robot action-icon"></i>
-                <h3 class="action-title">Ask the AI</h3>
-                <p class="action-description">Get analysis, summaries, or ask anything about your scans</p>
+                <h3 class="action-title">Demander à l'IA</h3>
+                <p class="action-description">Obtiens des analyses, des résumés ou pose n'importe quelle question sur tes scans</p>
             </button>
 
         </div>
@@ -80,13 +80,13 @@
         
     </div>
     <div class="footer">
-            <p class="footer-text">Intruder – Designed for offensive security automation</p>
+            <p class="footer-text">Intruder – Conçu pour l'automatisation de la sécurité offensive</p>
     </div>
     <div id="aiInfoModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>AI Assistant Info</h2>
-            <p>The chatbot appears on the detailed page of each scan. There, you can ask questions and get intelligent analysis of your scan results.</p>
+            <h2>Informations sur l'assistant IA</h2>
+            <p>Le chatbot apparaît sur la page détaillée de chaque scan. Là, tu peux poser des questions et obtenir une analyse intelligente des résultats de tes scans.</p>
         </div>
     </div>
 

@@ -1,8 +1,14 @@
 import sqlite3
 import sys
+import os
 
 
-def init_db(db_path='database.db'):
+# Chemin absolu unique vers la base SQLite, aligné avec app/__init__.py
+base_dir = os.path.abspath(os.path.dirname(__file__))
+DB_PATH = os.path.join(base_dir, '..', 'database.db')
+
+
+def init_db(db_path=DB_PATH):
     #Au niveau de Util l'attribut type est "default" pour les outils supporter de base et donc pour 
     #lesquels on a un process de parsing ou "added" pour les outils custom
     #processType c'est le nom de l'outil
@@ -30,25 +36,6 @@ def init_db(db_path='database.db'):
                     FOREIGN KEY(userId) REFERENCES USER(id)
                 );
             ''')
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS UTIL(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    name TEXT NOT NULL UNIQUE,
-                    description TEXT NOT NULL,
-                    Utiltype TEXT NOT NULL,
-                    CHECK(Utiltype IN ('default', 'added'))
-                );
-            ''')
-
-            cursor.execute('''
-                CREATE TABLE IF NOT EXISTS SCANSCHEMA (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    schemaName TEXT NOT NULL UNIQUE,
-                    schemaUtil TEXT NOT NULL,
-                    userid TEXT NOT NULL,
-                    FOREIGN KEY (userid) REFERENCES USER(id)
-                );
-            ''')
 
             cursor.execute('''
                 CREATE TABLE IF NOT EXISTS PROCESSES (
@@ -67,7 +54,7 @@ def init_db(db_path='database.db'):
         print(f"[!] Database error during initialization: {e}")
 
 
-def insertBuiltinTools(db_path='database.db'):
+def insertBuiltinTools(db_path=DB_PATH):
     tools = [
         ("Nmap", "Outil de scan de réseau et de sécurité", "default"),
         ("Nikto", "Scanner de vulnérabilités web", "default"),
@@ -88,7 +75,7 @@ def insertBuiltinTools(db_path='database.db'):
         print(f"[!] Erreur lors de l'insertion des outils : {e}")
 
 
-def addScan(name, ip, domain, db_path='database.db', id=None):
+def addScan(name, ip, domain, db_path=DB_PATH, id=None):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -101,7 +88,6 @@ def addScan(name, ip, domain, db_path='database.db', id=None):
             return True
     except sqlite3.IntegrityError as e:
         print(f"[!] Erreur : Le nom de scan '{name}' existe déjà. Veuillez en choisir un autre.")
-        sys.exit(1) 
     except sqlite3.Error as e:
         print(f"[!] Erreur base de données: {e}")
     except Exception as e:
@@ -109,7 +95,7 @@ def addScan(name, ip, domain, db_path='database.db', id=None):
     return False
 
 
-def checkScanExists(name, db_path='database.db'):
+def checkScanExists(name, db_path=DB_PATH):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -123,7 +109,7 @@ def checkScanExists(name, db_path='database.db'):
     return False
 
 
-def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
+def addProcesses(nameScan, typeOutput, output, db_path=DB_PATH):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -140,37 +126,7 @@ def addProcesses(nameScan, typeOutput, output, db_path = 'database.db'):
     return False
 
 
-def getScans(db_path='database.db', userId=None):
-    try:
-        with sqlite3.connect(db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT scanName FROM SCANS where userId = ?", (userId,))
-            rows = cursor.fetchall()
-            print(f"{rows}AAAAAAAAAAAAAAAAAAAAAAAA")
-            return [row[0] for row in rows]  
-    except sqlite3.Error as e:
-        print(f"[!] Database error: {e}")
-    except Exception as e:
-        print(f"[!] Unexpected error: {e}")
-    return ["default"]
-
-
-def getUsers(db_path='database.db'):
-    try:
-        with sqlite3.connect(db_path) as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT id, username FROM USER")
-            rows = cursor.fetchall()
-            return [{"id": row[0], "username": row[1]} for row in rows]
-    except sqlite3.Error as e:
-        print(f"[!] Database error: {e}")
-    except Exception as e:
-        print(f"[!] Unexpected error: {e}")
-    return ["default"]
-
-
-def getanUsername( userId=None):
-    db_path='database.db'
+def getanUsername(userId=None, db_path=DB_PATH):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -188,7 +144,7 @@ def getanUsername( userId=None):
     return None
 
 
-def getAllScans(db_path='database.db'):
+def getAllScans(db_path=DB_PATH):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
@@ -199,11 +155,21 @@ def getAllScans(db_path='database.db'):
         print(f"[!] Database error: {e}")
 
 
-def getScansDetails(db_path='database.db', scanName="default", id=None):
+def getScansDetails(db_path=DB_PATH, scanName="default", userId=None):
     try:
         with sqlite3.connect(db_path) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT * from PROCESSES where nameScan = ?  ", (scanName,))
+            if userId is not None:
+                cursor.execute(
+                    "SELECT * from PROCESSES where nameScan = ? AND userId = ?",
+                    (scanName, userId),
+                )
+            else:
+                # Fallback ancien comportement si aucun userId n'est fourni
+                cursor.execute(
+                    "SELECT * from PROCESSES where nameScan = ?",
+                    (scanName,),
+                )
             rows = cursor.fetchall()
             print(len(rows))
             return rows
@@ -213,6 +179,37 @@ def getScansDetails(db_path='database.db', scanName="default", id=None):
     except Exception as e:
         print(f"[!] Unexpected error: {e}")
     return ["default"]
+
+
+def getScanStatus(scanName, userId, db_path=DB_PATH):
+    """
+    Retourne un statut simple pour un scan donné et un utilisateur :
+    - 'pending'  : aucun résultat en base
+    - 'running'  : au moins un process (ex: Nmap) mais pas encore ZAP
+    - 'finished' : ZAP présent
+    """
+    try:
+        with sqlite3.connect(db_path) as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT processType FROM PROCESSES WHERE nameScan = ? AND userId = ?",
+                (scanName, userId),
+            )
+            rows = cursor.fetchall()
+
+        if not rows:
+            return "pending"
+
+        types = {row[0] for row in rows}
+        if "zap" in types:
+            return "finished"
+        return "running"
+
+    except sqlite3.Error as e:
+        print(f"[!] Database error in getScanStatus: {e}")
+    except Exception as e:
+        print(f"[!] Unexpected error in getScanStatus: {e}")
+    return "unknown"
 
 
 

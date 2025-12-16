@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,89 +18,89 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" >Home</a></li>
+                <li><a href="/home" >Accueil</a></li>
                 <li><a href="/home/scans" >Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
-                <li><a href="/logout" class="cta-link">Logout</a></li>
+                <li><a href="/logout" class="cta-link">Déconnexion</a></li>
                 {% else %}
-                <li><a href="/login" class="cta-link">Login</a></li>
-                <li><a href="/register" class="cta-link">Register</a></li>
+                <li><a href="/login" class="cta-link">Connexion</a></li>
+                <li><a href="/register" class="cta-link">Inscription</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
 
     <div class="container">
-        <!-- Fil d'ariane -->
+        <!-- Fil d'Ariane -->
         <div class="breadcrumb" style="margin-bottom: 1.5rem;">
-            <a href="/home">Home</a> /
+            <a href="/home">Accueil</a> /
             <a href="/home/docs" class="active">Documentation</a>
         </div>
 
         <!-- Titre principal -->
         <div class="page-header">
-            <h1 class="page-title">What is Intruder?</h1>
-            <p class="page-subtitle">Automating the footprinting phase of penetration testing</p>
+            <h1 class="page-title">Qu'est-ce qu'Intruder&nbsp;?</h1>
+            <p class="page-subtitle">Automatiser la phase de footprinting d'un test d'intrusion</p>
         </div>
 
         <!-- Présentation -->
         <div class="action-card" style="margin-bottom: 2rem;">
-            <p>Intruder is a tool written in Python that automates the early phases of a penetration test, such as reconnaissance and scanning.</p>
-            <p>It integrates tools like <strong>Nmap</strong>, <strong>Exploit-DB</strong>, <strong>WHOIS</strong>, and <strong>OWASP ZAP</strong> to simplify tasks, and leverages an LLM for intelligent analysis and reporting.</p>
+            <p>Intruder est un outil écrit en Python qui automatise les premières phases d'un test d'intrusion, comme la reconnaissance et les scans.</p>
+            <p>Il intègre des outils comme <strong>Nmap</strong>, <strong>Exploit-DB</strong>, <strong>WHOIS</strong> et <strong>OWASP ZAP</strong> pour simplifier ces tâches, et s'appuie sur un LLM pour fournir une analyse intelligente et aider à la rédaction des rapports.</p>
         </div>
 
         <!-- Phases -->
         <div class="action-card" style="margin-bottom: 2rem;">
-            <h2 class="action-title">Key Penetration Testing Phases</h2>
+            <h2 class="action-title">Principales phases d'un test d'intrusion</h2>
 
             <section class="phase">
-                <h3>1. Footprinting & Reconnaissance</h3>
+                <h3>1. Footprinting &amp; reconnaissance</h3>
                 <ul>
-                    <li>Network enumeration</li>
-                    <li>Domain information gathering</li>
-                    <li>WHOIS lookups</li>
-                    <li>DNS enumeration</li>
-                    <li>Port scanning</li>
-                    <li>Service identification</li>
+                    <li>Énumération du réseau</li>
+                    <li>Collecte d'informations sur le domaine</li>
+                    <li>Requêtes WHOIS</li>
+                    <li>Énumération DNS</li>
+                    <li>Scan de ports</li>
+                    <li>Identification des services</li>
                 </ul>
             </section>
 
             <section class="phase" style="margin-top: 1rem;">
                 <h3>2. Scanning</h3>
                 <ul>
-                    <li>Open ports and services</li>
-                    <li>Operating system detection</li>
-                    <li>Vulnerability scanning</li>
-                    <li>Network mapping</li>
+                    <li>Détection des ports et services ouverts</li>
+                    <li>Détection du système d'exploitation</li>
+                    <li>Scan de vulnérabilités</li>
+                    <li>Cartographie du réseau</li>
                 </ul>
             </section>
 
             <section class="phase" style="margin-top: 1rem;">
-                <h3>3. Enumeration</h3>
+                <h3>3. Énumération</h3>
                 <ul>
-                    <li>User accounts</li>
-                    <li>Machine names</li>
-                    <li>Network resources</li>
-                    <li>Services and applications</li>
+                    <li>Comptes utilisateurs</li>
+                    <li>Noms de machines</li>
+                    <li>Ressources réseau</li>
+                    <li>Services et applications</li>
                 </ul>
             </section>
         </div>
 
         <!-- Fonctionnement -->
         <div class="action-card">
-            <h2 class="action-title">How does it work?</h2>
-            <p>Intruder acts as a wrapper around essential security tools:</p>
+            <h2 class="action-title">Comment ça marche&nbsp;?</h2>
+            <p>Intruder agit comme une surcouche autour d'outils de sécurité essentiels&nbsp;:</p>
             <ul>
-                <li><strong>Nmap</strong> for scanning ports and services</li>
-                <li><strong>WHOIS</strong> for domain registration data</li>
-                <li><strong>Exploit-DB</strong> for known vulnerabilities</li>
-                <li><strong>OWASP ZAP</strong> for web application analysis</li>
+                <li><strong>Nmap</strong> pour scanner les ports et services</li>
+                <li><strong>WHOIS</strong> pour les données d'enregistrement de domaine</li>
+                <li><strong>Exploit-DB</strong> pour les vulnérabilités connues</li>
+                <li><strong>OWASP ZAP</strong> pour l'analyse des applications web</li>
             </ul>
-            <p>Results from these tools are interpreted using a Large Language Model to assist the user in report generation and understanding the risks.</p>
+            <p>Les résultats de ces outils sont interprétés via un Large Language Model afin d'aider l'utilisateur à générer ses rapports et à mieux comprendre les risques.</p>
         </div>
 
         <div class="footer">
-            <p class="footer-text">Intruder - Automated Penetration Testing Tool</p>
+            <p class="footer-text">Intruder - Outil automatisé de tests d'intrusion</p>
         </div>
     </div>
     <script>

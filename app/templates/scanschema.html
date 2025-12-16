@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Intruder</title>
+    <title>Bienvenue sur Intruder</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script  src="{{ url_for('static', filename='main.js') }}"  defer></script>
@@ -17,13 +17,13 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" >Home</a></li>
+                <li><a href="/home" >Accueil</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
-                <li><a href="/logout" class="cta-link">Logout</a></li>
+                <li><a href="/logout" class="cta-link">Déconnexion</a></li>
                 {% else %}
-                <li><a href="/login" class="cta-link">Login</a></li>
-                <li><a href="/register" class="cta-link">Register</a></li>
+                <li><a href="/login" class="cta-link">Connexion</a></li>
+                <li><a href="/register" class="cta-link">Inscription</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -31,23 +31,23 @@
 
    <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Build Your Footprinting Plan</h1>
-            <p class="page-subtitle">Drag tools into the slots to customize your scan strategy (max 4).</p>
+            <h1 class="page-title">Construis ton plan de footprinting</h1>
+            <p class="page-subtitle">Glisse-dépose les outils dans les emplacements pour personnaliser ta stratégie de scan (maximum 2).</p>
         </div>
 
         <form id="footprint-form" method="POST" >
             <div class="input-group" style="max-width: 400px; margin: 0 auto 2rem;">
-                <label for="scan-name">Scan Name</label>
-                <input type="text" id="scan-name" name="scan_name" placeholder="e.g. My Footprint Scan" required>
+                <label for="scan-name">Nom du scan</label>
+                <input type="text" id="scan-name" name="scan_name" placeholder="ex. : Mon scan de footprinting" required>
             </div>
             <div class="input-group" style="max-width: 400px; margin: 0 auto 2rem;">
-                <label for="target-ip">Target IP Address</label>
-                <input type="text" id="target-ip" name="target_ip" placeholder="e.g. 192.168.1.1" required>
+                <label for="target-ip">Adresse IP cible</label>
+                <input type="text" id="target-ip" name="target_ip" placeholder="ex. : 192.168.1.1" required>
             </div>
 
             <div class="tools-and-slots">
                 <div class="tool-list">
-                    <h3>Available Tools</h3>
+                    <h3>Outils disponibles</h3>
                     <div id="tools" class="tool-items">
                         {% for tool in builtinTools %}
                         <!-- Ajouter dynamiquement les outils de la base de données -->
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="slot-zone">
-                    <h3>Your Plan (Max 2)</h3>
+                    <h3>Ton plan (max 2)</h3>
                     <div class="slots" id="slots">
                         <div class="slot" data-index="0"></div>
                         <div class="slot" data-index="1"></div>
@@ -65,9 +65,9 @@
                 </div>
             </div>
 
-            <input type="hidden" name="selected_tools" id="selected-tools"> <!-- grace a ce  champ caché je peux récuperer du coté serveur les outils sélectionnés -->
+            <input type="hidden" name="selected_tools" id="selected-tools"> <!-- grâce à ce champ caché je peux récupérer côté serveur les outils sélectionnés -->
             <div style="text-align: center; margin-top: 2rem;">
-                <button type="submit" class="cta-button">Run Plan</button>
+                <button type="submit" class="cta-button">Lancer le plan</button>
             </div>
         </form>
     </div>
@@ -76,13 +76,13 @@
         
     </div>
     <div class="footer">
-            <p class="footer-text">Intruder – Designed for offensive security automation</p>
+            <p class="footer-text">Intruder – Conçu pour l'automatisation de la sécurité offensive</p>
     </div>
     <div id="aiInfoModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2>AI Assistant Info</h2>
-            <p>The chatbot appears on the detailed page of each scan. There, you can ask questions and get intelligent analysis of your scan results.</p>
+            <h2>Informations sur l'assistant IA</h2>
+            <p>Le chatbot apparaît sur la page détaillée de chaque scan. Là, tu peux poser des questions et obtenir une analyse intelligente des résultats de tes scans.</p>
         </div>
     </div>
 
@@ -112,10 +112,10 @@
                     e.preventDefault();
                     const tool = e.dataTransfer.getData('text/plain');
 
-                    // Empêche les doublons
-                    const alreadyUsed = Array.from(slots).some(s => s.textContent.trim() === tool);
-                    if (alreadyUsed) {
-                        alert(`"${tool}" is already used in a slot.`);
+                        // Empêche les doublons
+                        const alreadyUsed = Array.from(slots).some(s => s.textContent.trim() === tool);
+                        if (alreadyUsed) {
+                        alert(`"${tool}" est déjà utilisé dans un emplacement.`);
                         return;
                     }
 

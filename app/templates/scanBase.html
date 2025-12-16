@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,13 +19,13 @@
             </div>
             <ul class="nav-links">
                {% if user.is_authenticated %}
-                <li><a href="/home">Home</a></li>
+                <li><a href="/home">Accueil</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
-                <li><a href="/logout" class="cta-link">Logout</a></li>
+                <li><a href="/logout" class="cta-link">Déconnexion</a></li>
                 {% else %}
-                <li><a href="/login" class="cta-link">Login</a></li>
-                <li><a href="/register" class="cta-link">Register</a></li>
+                <li><a href="/login" class="cta-link">Connexion</a></li>
+                <li><a href="/register" class="cta-link">Inscription</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -34,14 +34,14 @@
     <div class="container">
         <!-- Fil d'Ariane -->
         <div class="breadcrumb" style="margin-bottom: 1.5rem;">
-            <a href="/home">Home</a> /
+            <a href="/home">Accueil</a> /
             <a href="/home/scans">Scans</a> /
             <a href="/home/scans/{{ scan }}" class="active">{{ scan }}</a>
         </div>
 
         <div class="page-header">
-            <h1 class="page-title">Scan: {{ scan }}</h1>
-            <p class="page-subtitle">Detailed analysis and findings</p>
+            <h1 class="page-title">Scan : {{ scan }}</h1>
+            <p class="page-subtitle">Analyse détaillée et résultats</p>
         </div>
 
         <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
@@ -57,28 +57,28 @@
                         {% endif %} -->
 
                         {% if detail[1] == 'nmap' %}
-                            <h2 class="action-title">Nmap Scan</h2>
+                            <h2 class="action-title">Scan Nmap</h2>
                             {% if detail[2]|length == 0 %}
-                                <p class="action-description">No juicy info found here</p>
+                                <p class="action-description">Aucune information intéressante trouvée ici</p>
                             {% else %}
                                 {% set scan = detail[2][0] %}
                                 <details>
-                                    <summary><strong>IP:</strong> {{ scan["ip"] }}</summary>
+                                    <summary><strong>IP :</strong> {{ scan["ip"] }}</summary>
                                     {% for port in scan["ports"] %}
                                         <details style="margin-left: 1rem;">
-                                            <summary>Port {{ port["port"] }}: {{ port["service"] }}  {{ port["product"] }}  {{ port["version"] }}</summary>
+                                            <summary>Port {{ port["port"] }} : {{ port["service"] }}  {{ port["product"] }}  {{ port["version"] }}</summary>
                                             {% if port["edb_ids"] %}
                                                 <ul>
                                                     {% for edbId in port["edb_ids"] %}
                                                         <li>
                                                             <a href="https://www.exploit-db.com/exploits/{{ edbId }}" target="_blank">
-                                                                Exploit #{{ edbId }}
+                                                                Exploit n°{{ edbId }}
                                                             </a>
                                                         </li>
                                                     {% endfor %}
                                                 </ul>
                                             {% else %}
-                                                <p>No known exploits.</p>
+                                                <p>Aucun exploit connu.</p>
                                             {% endif %}
                                         </details>
                                     {% endfor %}
@@ -87,22 +87,22 @@
                         {% endif %}
 
                         {% if detail[1] == 'zap' %}
-                            <h2 class="action-title">ZAP Scan</h2>
+                            <h2 class="action-title">Scan ZAP</h2>
                             {% if detail[2]|length == 0 %}
-                                <p class="action-description">No findings reported.</p>
+                                <p class="action-description">Aucun résultat signalé.</p>
                             {% else %}
                                 <ul>
                                     {% for alert in detail[2] %}
                                         <li style="margin-bottom: 1rem;">
                                             <details>
-                                                <summary><strong>{{ alert.name }}</strong> — Risk: {{ alert.risk }}</summary>
-                                                <p><strong>Description:</strong> {{ alert.description }}</p>
-                                                <p><strong>Solution:</strong> {{ alert.solution }}</p>
+                                                <summary><strong>{{ alert.name }}</strong> — Risque : {{ alert.risk }}</summary>
+                                                <p><strong>Description :</strong> {{ alert.description_fr if alert.description_fr else alert.description }}</p>
+                                                <p><strong>Solution :</strong> {{ alert.solution }}</p>
                                                 {% if alert.url %}
-                                                    <p><strong>URL:</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
+                                                    <p><strong>URL :</strong> <a href="{{ alert.url }}" target="_blank">{{ alert.url }}</a></p>
                                                 {% endif %}
                                                 {% if alert.reference %}
-                                                    <p><strong>Reference:</strong>
+                                                    <p><strong>Références :</strong>
                                                         {% for ref in alert.reference.split('\n') %}
                                                             <br><a href="{{ ref }}" target="_blank">{{ ref }}</a>
                                                         {% endfor %}
@@ -121,7 +121,7 @@
                 <div style="text-align: center; margin-top: 2rem;">
                     <a href="/home/scans/{{ scan }}/export" class="action-card" style="display: inline-block; padding: 1rem 2rem;">
                         <i class="fas fa-download action-icon"></i>
-                        <h3 class="action-title">Download Report</h3>
+                        <h3 class="action-title">Télécharger le rapport</h3>
                     </a>
                 </div>
             </div>
@@ -129,27 +129,27 @@
             <!-- Chatbot IA -->
             <div style="flex: 1 1 35%;">
                 <div id="ai" class="action-card" style="padding: 1.5rem; margin-top: 1rem; position: sticky; top: 100px;">
-                    <h2 class="action-title" style="margin-bottom: 1rem;">AI Assistant</h2>
+                    <h2 class="action-title" style="margin-bottom: 1rem;">Assistant IA</h2>
 
                     <div id="aiResponse" style="margin-bottom: 1rem; max-height: 300px; overflow-y: auto; background: var(--accent-bg); padding: 1rem; border-radius: 8px; white-space: pre-wrap;">
                         {% if response %}
-                            <p><strong>User:</strong> {{ question }}</p>
-                            <p><strong>AI:</strong> {{ response }}</p>
+                            <p><strong>Utilisateur :</strong> {{ question }}</p>
+                            <p><strong>IA :</strong> {{ response }}</p>
                         {% else %}
-                            <p>Ask a question below to get started</p>
+                            <p>Pose une question ci‑dessous pour commencer</p>
                         {% endif %}
                     </div>
 
                     <div id="aiFooter">
                         <form action="" id="aiForm" method="post" style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <input type="text" id="aiInput" name="iaInput" placeholder="Ask a question..." required
+                            <input type="text" id="aiInput" name="iaInput" placeholder="Pose une question..." required
                                 style="padding: 0.75rem; border: none; border-radius: 8px; background: var(--accent-bg); color: var(--primary-text);">
-                            <input type="submit" value="Submit" name="asking"
+                            <input type="submit" value="Envoyer" name="asking"
                                 style="padding: 0.6rem; border: none; border-radius: 8px; background: var(--accent-color); color: #000; font-weight: bold; cursor: pointer;">
                         </form>
 
                         <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--secondary-text);">
-                            Powered by <a href="https://groq.com" target="_blank" style="color: var(--accent-color);">GROQ</a>
+                            Propulsé par <a href="https://groq.com" target="_blank" style="color: var(--accent-color);">GROQ</a>
                         </p>
                     </div>
 
@@ -166,7 +166,7 @@
         </div>
 
         <div class="footer">
-            <p class="footer-text">Intruder - Automated Penetration Testing Tool</p>
+            <p class="footer-text">Intruder - Outil automatisé de tests d'intrusion</p>
         </div>
 
     </div>

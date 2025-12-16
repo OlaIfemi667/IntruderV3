@@ -1,6 +1,4 @@
 import asyncio
-from urllib.parse import urlparse
-
 
 #mes packages
 from parsing.whoisParsing import *
@@ -21,11 +19,6 @@ async def runCommand(cmd, name):
     
     #ici j'ai retourné stdout et err pour les utiliser dans les autres fonctions
     return stdout.decode(), stderr.decode()
-    
-
-def is_valid_url(url: str) -> bool:
-    parsed = urlparse(url)
-    return all([parsed.scheme in ('http', 'https'), parsed.netloc])
 
 
 async def doPing(host):
@@ -56,15 +49,6 @@ async def doNmap(host):
     if stdout:
         stdout = nmapParsing(f"{host}Nmap.xml")
 
-    return stdout, stderr
-
-
-async def searchSploit(name):
-    cmd = f"searchsploit  {name}"
-
-    print(f"[+] Searching exploit for {name}")
-    
-    stdout, stderr = await runCommand(cmd, "searchsploit")
     return stdout, stderr
 
 

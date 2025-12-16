@@ -1,68 +1,63 @@
+import json
 from parsing.nmapParsing import *
 from parsing.whoisParsing import *
 from parsing.nucleiParsing import *
 from subprocessUtils.subprocess import *
 from database.database import *
 from zap.zap import *
+from traductionAndNotification.traduction import translate_en_fr
+
 
 async def ipAi(ip, scanName, domain, id=None, zapApiKey=None):
-    
-    # faire un whois
-    #stdoutWhois, stderrWhois = await doWhois(ip)
-    #print(f"[+] Recherche enregistrement DNS de {ip} terminé")
-    #parsedWhois = whoisParsing(stderrWhois)
-    #print(parsedWhois)
-    
+    """
+    Lance les différents scans (Nmap, ZAP, etc.) et enregistre les résultats en base.
+    Cette fonction est appelée dans un thread séparé depuis la vue Flask.
+    """
 
-    # faire un scan de ports
-    stdoutNmap, stderrNmap = await doNmap(ip)
-    if stderrNmap:
-        print(f"[!] Erreur lors du scan Nmap: {stderrNmap}")
-        return
-    print(f"[+] Scan nmap  {ip} completed")
-    print("[+] Adding scan nmap to database")
-    addProcesses(scanName, "nmap", stdoutNmap)
-    
+    try:
+        # ---- Scan Nmap ----
+        stdoutNmap, stderrNmap = await doNmap(ip)
+        if stderrNmap:
+            print(f"[!] Erreur lors du scan Nmap pour {ip}: {stderrNmap}")
+            return
 
-    #faire le scan de vuln avec nuclei
-    #stdoutNuclei, stderrNuclei = await nuclei(ip)
-    #print(f"[+] Scan nuclei de {ip} terminé")
-    
-    #addProcesses(scanName, "nuclei", str(stdoutNuclei))
-
-
-    # il faut que je code le systeme pour recherche les protocoles tcp web trouvé http, https
-
-    # ajouter les result
-    addScan(scanName, ip, domain, id=id)
-    zapOutput = zap(ip, "http", zapApiKey)  # Change to match the API key set in ZAP, or use None if the API key is disabled
-    
-    #addProcesses(scanName, "whois", str(parsedWhois))
-    
-    addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
+        print(f"[+] Scan Nmap pour {ip} terminé")
+        print("[+] Ajout des résultats Nmap dans la base")
+        addProcesses(scanName, "nmap", stdoutNmap)
 
 
 
-def vulnscan():
-    pass
+        # ---- Création de l'entrée de scan globale ----
+        print(f"[+] Enregistrement du scan '{scanName}' pour l'utilisateur {id}")
+        added = addScan(scanName, ip, domain, id=id)
+        if not added:
+            print(f"[!] Impossible d'enregistrer le scan '{scanName}' (doublon ou erreur DB)")
+            # On peut continuer les scans, mais on log le problème
 
+        # ---- Scan ZAP ----
+        try:
+            print(f"[+] Lancement du scan ZAP sur {ip}")
+            zapOutput = zap(ip, "http", zapApiKey)  # adapter si besoin le schéma/proto
+            
+            # Ajouter la traduction française de la description pour chaque alerte
+            if zapOutput and isinstance(zapOutput, list):
+                for alert in zapOutput:
+                    if isinstance(alert, dict) and 'description' in alert:
+                        try:
+                            alert['description_fr'] = translate_en_fr(alert['description'])
+                            print(f"[+] Description traduite pour l'alerte: {alert.get('name', 'Unknown')}")
+                        except Exception as e:
+                            print(f"[!] Erreur lors de la traduction de la description: {e}")
+                            # En cas d'erreur, on garde la description originale
+                            alert['description_fr'] = alert.get('description', '')
+            
+            addProcesses(scanName, "zap", json.dumps(zapOutput, indent=4))
+            print(f"[+] Scan ZAP sur {ip} terminé et enregistré")
+        except Exception as e:
+            print(f"[!] Erreur lors du scan ZAP pour {ip}: {e}")
 
-def searchspoitEveryService(nmapOutput):
+        print(f"[+] Pipeline ipAi terminé pour le scan '{scanName}' ({ip})")
 
-    #reminder nmapOutput format
-    #[
-    #   {
-    #       "ip": "aRandomIPaddress",
-    #       "ports": [{"protocol": "TCP", "port": "80", "service": "HTTP"(or unknown if unknown), "product": "xxxx", "version": "2.1.0"}, "edb-ids": [list of EDB-ID]}],
-    #       "os": {"name": "linux"}
-    #   }
-    #]
-
-    exploits = []
-    for port in nmapOutput["ports"]:
-        for edcID in port["edb-id"]:
-            #Logique pour récuperer le chemin de chaque exploit dans un  table et append {"portId": [list des chemins d'exploits]} dans la liste exploits
-            # la commande pour  avoir des infos sur le path searchsploit -p 24450
-            pass
-
-        
+    except Exception as e:
+        # Catch global pour éviter qu'une exception ne tue silencieusement le thread
+        print(f"[!] Erreur inattendue dans ipAi pour le scan '{scanName}' ({ip}): {e}")

@@ -1,16 +1,16 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for 
-from .models import Util
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from datetime import datetime
 import threading
-
+import os
+import io
+import sqlite3
 
 from . import db
-from flask_login import login_required,  current_user
+from .models import Scan
+from flask_login import login_required, current_user
 from database.database import *
 from weasyprint import HTML
-import io
-import os
-from parsing.nmapParsing  import convertTuples, isIP
+from parsing.nmapParsing import convertTuples, isIP
 from ai.ai import getResponseFromAI
 from commandsFunctions.ipFunction import *
 
@@ -29,30 +29,46 @@ def index():
 @views.route("/home/scans")
 @login_required
 def scans():
-    scans = getScans(DB_PATH, current_user.id)
-    return render_template("scans.html", content = scans, user=current_user)
+    # Utilise  le modèle SQLAlchemy Scan pour récupérer les scans de l'utilisateur
+    user_scans = Scan.query.filter_by(userId=current_user.id).order_by(Scan.date.desc()).all()
+    scan_names = [scan.scanName for scan in user_scans]
+
+    # Statut simple basé sur la présence des résultats dans PROCESSES
+    statuses = {}
+    for s in user_scans:
+        status = getScanStatus(s.scanName, current_user.id)
+        if status == "finished":
+            label = "Terminé"
+        elif status == "running":
+            label = "En cours"
+        elif status == "pending":
+            label = "En attente"
+        else:
+            label = "Inconnu"
+        statuses[s.scanName] = label
+
+    return render_template("scans.html", content=scan_names, statuses=statuses, user=current_user)
 
 @views.route("/home/newscan", methods=['POST', 'GET'])
 @login_required
 def newScan():
-    print(current_user.zapApi)
     if request.method == "POST":
         target = request.form.get("target")
         scanName = request.form.get("scanName") 
         if not target:
-            flash("Target IP address is required.", category='error')
+            flash("L'adresse IP cible est requise.", category='error')
             return redirect(url_for('views.newScan'))
 
         if not isIP(target):
-            flash("Invalid IP address format.", category='error')
+            flash("Format d'adresse IP invalide.", category='error')
             return redirect(url_for('views.newScan'))
 
         
         if checkScanExists(scanName, DB_PATH):
-            flash(f"Scan with name {scanName} already exists.", category='error')
+            flash(f"Un scan nommé {scanName} existe déjà.", category='error')
             return redirect(url_for('views.newScan'))
 
-        flash(f"Scan {scanName} created successfully.", category='success')
+        flash(f"Scan {scanName} créé avec succès. Le scan est en cours, consulte l'historique pour suivre les résultats.", category='success')
 
 
         # Capture les valeurs AVANT de quitter le contexte Flask
@@ -71,7 +87,7 @@ def newScan():
 @views.route("/home/scans/<scanName>", methods=['POST', 'GET'])
 @login_required
 def scanDetail(scanName):
-    scanDetail = getScansDetails(DB_PATH, scanName)
+    scanDetail = getScansDetails(DB_PATH, scanName, current_user.id)
     scanDetail = convertTuples(scanDetail)
     apiKey = current_user.groqApi if current_user.groqApi else None
     if request.method == 'POST':
@@ -83,15 +99,11 @@ def scanDetail(scanName):
             return render_template("scanBase.html", scan=scanName, scansContent=scanDetail, response=response, question=question, user=current_user)
     return render_template("scanBase.html", scan = scanName, scansContent = scanDetail, user=current_user)
 
-""" @app.route("/home/scans/<scanName>/reporting")
-def reporting(scanName):
-    return render_template("reportingBase.html", scan=scanName) """
-
 @views.route("/home/scans/<scanName>/export")
 @login_required
 def export_report(scanName):
     ##on converti en pdf grace a l'objet HTML de weasyprint
-    scanDetail = getScansDetails(DB_PATH, scanName)
+    scanDetail = getScansDetails(DB_PATH, scanName, current_user.id)
     scanDetail = convertTuples(scanDetail)
     
 
@@ -101,11 +113,6 @@ def export_report(scanName):
         'Content-Type': 'application/pdf',
         'Content-Disposition': f'attachment; filename="{scanName}_report.pdf"'
     }
-
-""" @app.route("/home/reports")
-def reports():
-    return render_template("reportsBase.html") """
-
 
 @views.route("/home/docs")
 def documentation():
@@ -118,8 +125,15 @@ def delete_scan(scanName):
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM PROCESSES WHERE nameScan = ?", (scanName,))
-        cursor.execute("DELETE FROM SCANS WHERE scanName = ?", (scanName,))
+        # Ne supprime que les données appartenant à l'utilisateur courant
+        cursor.execute(
+            "DELETE FROM PROCESSES WHERE nameScan = ? AND userId = ?",
+            (scanName, current_user.id),
+        )
+        cursor.execute(
+            "DELETE FROM SCANS WHERE scanName = ? AND userId = ?",
+            (scanName, current_user.id),
+        )
         conn.commit()
         conn.close()
         return redirect(url_for('views.scans'))
@@ -133,8 +147,9 @@ def delete_all_scans():
     try:
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM PROCESSES")
-        cursor.execute("DELETE FROM SCANS")
+        # Ne supprime que les scans de l'utilisateur courant
+        cursor.execute("DELETE FROM PROCESSES WHERE userId = ?", (current_user.id,))
+        cursor.execute("DELETE FROM SCANS WHERE userId = ?", (current_user.id,))
         conn.commit()
         conn.close()
         return redirect(url_for('views.scans'))
@@ -142,16 +157,4 @@ def delete_all_scans():
         return f"Error deleting all scans: {e}"
 
 
-@views.route("/home/scanSchema", methods=["POST", "GET"])
-@login_required
-def scanSchema():
-    Utils = Util.query.filter_by(Utiltype='default').all() # Récupérer les outils par défaut dans la db
-    nameUtils = [util.name for util in Utils]  # comprehension de liste pour les noms des outils
-    print(nameUtils)
-    if request.method == "POST":
-        scanName = request.form.get("scan_name")
-        target_ip = request.form.get("target_ip")
-        selected_tools = request.form.get("selected_tools")  # on récup les outils sélectionnés dans un tableau au format  a,b,c,d
 
-        print(f"Scan Name: {scanName}, Target IP: {target_ip}, Selected Tools: {selected_tools}")
-    return render_template("scanschema.html", user=current_user, builtinTools=nameUtils)

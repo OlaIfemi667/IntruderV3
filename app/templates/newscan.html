@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Scan – Intruder</title>
+  <title>Nouveau scan – Intruder</title>
   <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -28,13 +28,13 @@
       </div>
       <ul class="nav-links">
         {% if user.is_authenticated %}
-        <li><a href="/home" >Home</a></li>
+        <li><a href="/home" >Accueil</a></li>
         <li><a href="/home/scans">Scans</a></li>
         <li><a href="/home/docs">Documentation</a></li>
-        <li><a href="/logout" class="cta-link">Logout</a></li>
+        <li><a href="/logout" class="cta-link">Déconnexion</a></li>
         {% else %}
-        <li><a href="/login" class="cta-link">Login</a></li>
-        <li><a href="/register" class="cta-link">Register</a></li>
+        <li><a href="/login" class="cta-link">Connexion</a></li>
+        <li><a href="/register" class="cta-link">Inscription</a></li>
         {% endif %}
       </ul>
     </nav>
@@ -66,15 +66,15 @@
 
   <div class="container">
     <div class="login-form">
-        <h2>Start New Scan</h2>
+        <h2>Lancer un nouveau scan</h2>
         <form action="/home/newscan" method="post">
             <div class="input-group">
-                <label for="scanName">Scan Name</label>
-                <input type="text" id="scanName" name="scanName" placeholder="e.g., My Scan" required>
-                <label for="target">Target IP Address</label>
-                <input type="text" id="target" name="target" placeholder="e.g., 192.168.1.1" required>
+                <label for="scanName">Nom du scan</label>
+                <input type="text" id="scanName" name="scanName" placeholder="ex. : Mon scan" required>
+                <label for="target">Adresse IP cible</label>
+                <input type="text" id="target" name="target" placeholder="ex. : 192.168.1.1" required>
             </div>
-            <button type="submit">Scan</button>
+            <button type="submit">Scanner</button>
         </form>
 
         {% if error %}
@@ -88,7 +88,7 @@
   </div>
 
   <div class="footer">
-    <p class="footer-text">Intruder – Automated Penetration Testing Tool</p>
+    <p class="footer-text">Intruder – Outil automatisé de tests d'intrusion</p>
   </div>
   <script>
       document.querySelectorAll('.nav-links a').forEach(link => {

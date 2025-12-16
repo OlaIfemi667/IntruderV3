@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Intruder Report - {{ scan }}</title>
@@ -61,32 +61,32 @@
 </head>
 <body>
 
-    <h1>Scan Report: {{ scan }}</h1>
+    <h1>Rapport de scan : {{ scan }}</h1>
 
     {% for detail in scansContent %}
         {% if detail[1] == 'nmap' %}
         <div class="section">
-            <h2>Nmap Results</h2>
+            <h2>Résultats Nmap</h2>
             {% if detail[2]|length == 0 %}
-                <p>No open ports detected or no result available.</p>
+                <p>Aucun port ouvert détecté ou aucun résultat disponible.</p>
             {% else %}
                 {% set scan_result = detail[2][0] %}
-                <p><strong>Target IP:</strong> {{ scan_result["ip"] }}</p>
+                <p><strong>IP cible :</strong> {{ scan_result["ip"] }}</p>
                 {% for port in scan_result["ports"] %}
                     <div class="port-box">
-                        <p><strong>Port:</strong> {{ port.port }}</p>
-                        <p><strong>Service:</strong> {{ port.service }}</p>
-                        <p><strong>Product:</strong> {{ port.product }}</p>
-                        <p><strong>Version:</strong> {{ port.version }}</p>
+                        <p><strong>Port :</strong> {{ port.port }}</p>
+                        <p><strong>Service :</strong> {{ port.service }}</p>
+                        <p><strong>Produit :</strong> {{ port.product }}</p>
+                        <p><strong>Version :</strong> {{ port.version }}</p>
                         {% if port["edb_ids"] %}
-                            <p><strong>Exploits:</strong></p>
+                            <p><strong>Exploits :</strong></p>
                             <ul>
                                 {% for edbId in port["edb_ids"] %}
                                     <li><a href="https://www.exploit-db.com/exploits/{{ edbId }}">EDB-{{ edbId }}</a></li>
                                 {% endfor %}
                             </ul>
                         {% else %}
-                            <p>No public exploits available.</p>
+                            <p>Aucun exploit public disponible.</p>
                         {% endif %}
                     </div>
                 {% endfor %}
@@ -96,21 +96,21 @@
 
         {% if detail[1] == 'zap' %}
         <div class="section">
-            <h2>ZAP Scan Results</h2>
+            <h2>Résultats du scan ZAP</h2>
             {% if detail[2]|length == 0 %}
-                <p>No vulnerabilities found.</p>
+                <p>Aucune vulnérabilité trouvée.</p>
             {% else %}
                 {% for alert in detail[2] %}
                     <div class="zap-alert">
-                        <p><strong>Name:</strong> {{ alert.name }}</p>
-                        <p><strong class="zap-risk">Risk:</strong> {{ alert.risk }}</p>
-                        <p><strong>Description:</strong> {{ alert.description }}</p>
-                        <p><strong>Solution:</strong> {{ alert.solution }}</p>
+                        <p><strong>Nom :</strong> {{ alert.name }}</p>
+                        <p><strong class="zap-risk">Risque :</strong> {{ alert.risk }}</p>
+                        <p><strong>Description :</strong> {{ alert.description_fr if alert.description_fr else alert.description }}</p>
+                        <p><strong>Solution :</strong> {{ alert.solution }}</p>
                         {% if alert.url %}
-                            <p><strong>URL:</strong> {{ alert.url }}</p>
+                            <p><strong>URL :</strong> {{ alert.url }}</p>
                         {% endif %}
                         {% if alert.reference %}
-                            <p><strong>References:</strong></p>
+                            <p><strong>Références :</strong></p>
                             <ul>
                                 {% for ref in alert.reference.split('\n') %}
                                     <li>{{ ref }}</li>
@@ -125,7 +125,7 @@
     {% endfor %}
 
     <div class="footer">
-        Intruder Report — Generated on {{ timestamp or "Unknown date" }}
+        Rapport Intruder — Généré le {{ timestamp or "date inconnue" }}
     </div>
 
 </body>

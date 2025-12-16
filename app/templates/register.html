@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intruder - Register</title>
+    <title>Intruder - Inscription</title>
      <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -29,13 +29,13 @@
             </div>
             <ul class="nav-links">
                 {% if user.is_authenticated %}
-                <li><a href="/home" >Home</a></li>
+                <li><a href="/home" >Accueil</a></li>
                 <li><a href="/home/scans">Scans</a></li>
                 <li><a href="/home/docs">Documentation</a></li>
-                <li><a href="/logout" class="cta-link">Logout</a></li>
+                <li><a href="/logout" class="cta-link">Déconnexion</a></li>
                 {% else %}
-                <li><a href="/login" class="cta-link">Login</a></li>
-                <li><a href="/register" class="cta-link">Register</a></li>
+                <li><a href="/login" class="cta-link">Connexion</a></li>
+                <li><a href="/register" class="cta-link">Inscription</a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -66,45 +66,45 @@
 
     <div class="container">
         <div class="login-form">
-            <h2>Create an Account</h2>
+            <h2>Créer un compte</h2>
             <form action="/register" method="post">
                 <div class="input-group">
-                    <label for="username">Username</label>
+                    <label for="username">Nom d'utilisateur</label>
                     <input type="text" id="username" name="username" required>
                 </div>
                 <div class="input-group">
-                    <label for="email">Email</label>
+                    <label for="email">E‑mail</label>
                     <input type="email" id="email" name="email" required>
                 </div>
                 <div class="input-group">
-                    <label for="password">Password</label>
+                    <label for="password">Mot de passe</label>
                     <input type="password" id="password" name="password" required>
                 </div>
                 <div class="input-group">
-                    <label for="confirm-password">Confirm Password</label>
+                    <label for="confirm-password">Confirmer le mot de passe</label>
                     <input type="password" id="confirm-password" name="confirm_password" required>
                 </div>
                 <div class="input-group">
-                    <label for="groqApi">Groq API Key</label>
-                    <input type="text" id="groqApi" name="groqApi" placeholder="Optional: GroqAPiKey But LLM won't work without it" required>
+                    <label for="groqApi">Clé API Groq</label>
+                    <input type="text" id="groqApi" name="groqApi" placeholder="Optionnel : clé Groq API, mais l'IA ne fonctionnera pas sans" required>
                 </div>
                 <div class="input-group">
-                    <label for="zapApi">ZAP API Key</label>
-                    <input type="text" id="zapApi" name="zapApi" placeholder="ZAP API Key" required>
+                    <label for="zapApi">Clé API ZAP</label>
+                    <input type="text" id="zapApi" name="zapApi" placeholder="Clé API ZAP" required>
                 </div>
-                <button type="submit">Register</button>
+                <button type="submit">S'inscrire</button>
             </form>
             {% if error %}
             <p class="error">{{ error }}</p>
             {% endif %}
             <div class="cta-login">
-                <p>Already have an account? <a href="/login" class="cta-link">Login here</a></p>
+                <p>Tu as déjà un compte ? <a href="/login" class="cta-link">Connecte-toi ici</a></p>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <p class="footer-text">Intruder - Automated Penetration Testing Tool</p>
+        <p class="footer-text">Intruder - Outil automatisé de tests d'intrusion</p>
     </div>
     <script>
         document.querySelectorAll('.nav-links a').forEach(link => {
