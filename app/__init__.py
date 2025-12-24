@@ -41,8 +41,10 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
+        #primordial pour la gestion de la session, flask en a besoin pour savoir qui est connecté
         #ici on dit a flask-login comment charger un utilisateur
         #user_id est l'id de l'utilisateur stocké dans la session
         return User.query.get(int(user_id))
+    
 
     return app

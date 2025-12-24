@@ -15,13 +15,13 @@ async def runCommand(cmd, name):
         stderr=asyncio.subprocess.PIPE)
 
     stdout, stderr = await proc.communicate()
-    print(f'[{cmd!r} exited with {proc.returncode}]')
+    print(f'[{name}] {cmd!r} exited with {proc.returncode}')
     
     #ici j'ai retourné stdout et err pour les utiliser dans les autres fonctions
     return stdout.decode(), stderr.decode()
 
 
-async def doPing(host):
+"""async def doPing(host):
     cmd = f"ping -c 5  {host}"
     print("[+] Nous tentons  de joindre l'hôte")
     stdout, stderr = await runCommand(cmd, "ping")
@@ -38,7 +38,7 @@ async def doWhois(host):
     if stdout:
         stdout = whoisParsing(stdout)
 
-    return stdout, stderr
+    return stdout, stderr"""
 
 
 async def doNmap(host):
@@ -52,12 +52,12 @@ async def doNmap(host):
     return stdout, stderr
 
 
-async def nuclei(host):
+"""async def nuclei(host):
     cmd = f"nuclei -target {host} -output {host}Nuclei.txt"
     print(f"Vulnerability scan on {host} with nuclei")
 
     stdout, stderr = await runCommand(cmd, "nuclei")
     if stdout:
         stdout = nucleiParsing(f"{host}Nuclei.txt")
-    return stdout, stderr
+    return stdout, stderr"""
 

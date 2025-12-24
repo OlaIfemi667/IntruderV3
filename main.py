@@ -9,7 +9,6 @@ from parsing.nmapParsing import * #to parse nmap
 from commandsFunctions.ipFunction import * #logique when only ip is provide
 from database.database import * #for db SQLite operations
 from asciart.asciiart import *
-from manage.manage import manager
 
 
 from app.main import app as web_app
@@ -29,12 +28,12 @@ def checkRequiredSysBin():
     return all_present
 
 
-init_db() # this line is so obvious :)
+init_db() # this line is so obvious :) XD
 app = typer.Typer()
 
 
 # pour exécuter un scan , may delete i soon
-@app.command()
+"""@app.command()
 def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[str, typer.Argument(help="IP address to scan")], domain: Annotated[str, typer.Option(help="domain to scan")] = "None"):
     print(f"Scan name: {name}")
     
@@ -48,7 +47,7 @@ def scan(name: Annotated[str, typer.Argument(help="Scan name")],ip: Annotated[st
 
         #si ping réussi
         if stdoutPing:
-            asyncio.run(ipAi(ip, name, domain))
+            asyncio.run(ipAi(ip, name, domain))"""
 
 @app.command()
 def web():

@@ -53,13 +53,13 @@ def scans():
 @login_required
 def newScan():
     if request.method == "POST":
-        target = request.form.get("target")
+        ip = request.form.get("target")
         scanName = request.form.get("scanName") 
-        if not target:
+        if not ip:
             flash("L'adresse IP cible est requise.", category='error')
             return redirect(url_for('views.newScan'))
 
-        if not isIP(target):
+        if not isIP(ip):
             flash("Format d'adresse IP invalide.", category='error')
             return redirect(url_for('views.newScan'))
 
@@ -78,9 +78,9 @@ def newScan():
         zap_api = current_user.zapApi
 
         threading.Thread(
-            target=lambda: asyncio.run(ipAi(target, scanName, "", user_id, zap_api))
+            target=lambda: asyncio.run(ipAi(ip, scanName, "", user_id, zap_api))
         ).start()
-
+        print(f"view {target}")
         return redirect(url_for('views.scanDetail', scanName=scanName))
     return render_template("newscan.html", user=current_user)
 
